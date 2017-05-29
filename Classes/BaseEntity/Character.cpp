@@ -14,7 +14,9 @@ void Character::Init(const char* _srcImg, const char* _name, float _x, float _y)
 	mLoc.set(.5f, .5f);
 	mLocInc.set(.005f, .01f);
 
-	characterAnimator.animType = Animator::NIL;
+	entityType = EntityType::CHARACTER;
+
+	animator.animType = Animator::NIL;
 
 	charEffect = new GLProgram();
 	charEffect->initWithFilenames("Basic.vsh", "CharEffect.fsh");
@@ -33,13 +35,13 @@ void Character::MoveChar(int _dir)
 
 	if (m_dir == -1)
 	{
-		characterAnimator.animType = Animator::PLAYERJUMP;
-		characterAnimator.PlayAnimation(characterAnimator.animType, this);
+		animator.animType = Animator::PLAYERJUMP;
+		animator.PlayAnimation(animator.animType, (BaseEntity*)this);
 	}
 	else
 	{
-		characterAnimator.animType = Animator::PLAYERRUN;
-		characterAnimator.PlayAnimation(characterAnimator.animType, this);
+		animator.animType = Animator::PLAYERRUN;
+		animator.PlayAnimation(animator.animType, (BaseEntity*)this);
 	}
 }
 
@@ -100,6 +102,6 @@ void Character::Stop(void)
 	m_dir = 0;
 	m_mainSprite->stopAllActions();
 
-	characterAnimator.animType = Animator::PLAYERIDLE;
-	characterAnimator.PlayAnimation(characterAnimator.animType, this);
+	animator.animType = Animator::PLAYERIDLE;
+	animator.PlayAnimation(animator.animType, (BaseEntity*)this);
 }

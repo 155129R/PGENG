@@ -2,22 +2,18 @@
 #define CHARACTER_H
 
 #include "Classes\Animator.h"
+#include "BaseEntity.h"
 #include "cocos2d.h"
 
 using namespace cocos2d;
 
-class Character
+class Character : public BaseEntity
 {
 private:
 	GLProgram *charEffect;
-	Sprite* m_mainSprite;
 
 	Vec2 mLoc;
 	Vec2 mLocInc;
-
-	int m_dir;
-	float m_speed;
-	Animator characterAnimator;
 
 public:
 	void Init(const char*, const char*, float, float);
@@ -26,8 +22,7 @@ public:
 	void Stop(void);
 	void Update(float);
 
-	Sprite* getSprite(void) { return m_mainSprite; }
-	Vec2 getPosition() { return m_mainSprite->getPosition(); }
+
 };
 
 #endif // CHARACTER_H

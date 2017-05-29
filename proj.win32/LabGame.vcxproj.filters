@@ -24,7 +24,6 @@
     <ClCompile Include="..\Classes\AppDelegate.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Character.cpp" />
     <ClCompile Include="..\Classes\scene\GameScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
@@ -33,6 +32,8 @@
     </ClCompile>
     <ClCompile Include="..\Classes\scene\SceneManager.cpp" />
     <ClCompile Include="..\Classes\Animator.cpp" />
+    <ClCompile Include="..\Classes\BaseEntity\BaseEntity.cpp" />
+    <ClCompile Include="..\Classes\BaseEntity\Character.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -41,7 +42,6 @@
     <ClInclude Include="..\Classes\AppDelegate.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Character.h" />
     <ClInclude Include="..\Classes\scene\GameScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
@@ -53,6 +53,8 @@
       <Filter>Constants</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Animator.h" />
+    <ClInclude Include="..\Classes\BaseEntity\BaseEntity.h" />
+    <ClInclude Include="..\Classes\BaseEntity\Character.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

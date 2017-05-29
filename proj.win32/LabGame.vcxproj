@@ -146,7 +146,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
   <ItemGroup>
     <ClCompile Include="..\Classes\Animator.cpp" />
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
-    <ClCompile Include="..\Classes\Character.cpp" />
+    <ClCompile Include="..\Classes\BaseEntity\BaseEntity.cpp" />
+    <ClCompile Include="..\Classes\BaseEntity\Character.cpp" />
     <ClCompile Include="..\Classes\scene\GameScene.cpp" />
     <ClCompile Include="..\Classes\scene\HelloWorldScene.cpp" />
     <ClCompile Include="..\Classes\scene\SceneManager.cpp" />
@@ -155,7 +156,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
   <ItemGroup>
     <ClInclude Include="..\Classes\Animator.h" />
     <ClInclude Include="..\Classes\AppDelegate.h" />
-    <ClInclude Include="..\Classes\Character.h" />
+    <ClInclude Include="..\Classes\BaseEntity\BaseEntity.h" />
+    <ClInclude Include="..\Classes\BaseEntity\Character.h" />
     <ClInclude Include="..\Classes\Constants\Constants.h" />
     <ClInclude Include="..\Classes\scene\GameScene.h" />
     <ClInclude Include="..\Classes\scene\HelloWorldScene.h" />
