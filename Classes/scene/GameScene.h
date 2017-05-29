@@ -1,6 +1,7 @@
 #ifndef __GAME_SCENE_H__
 #define __GAME_SCENE_H__
 
+#include "Character.h"
 #include "cocos2d.h"
 
 using namespace cocos2d;
@@ -13,6 +14,11 @@ public:
 
 	static cocos2d::Scene* createScene();
 	virtual bool init();
+	
+	//Temporary until Input for touch is in
+	virtual void onKeyPressed(EventKeyboard::KeyCode, Event*);
+	virtual void onKeyReleased(EventKeyboard::KeyCode, Event*);
+	
 	virtual void update(float);
 
 	// implement the "static create()" method manually
@@ -20,6 +26,8 @@ public:
 
 private:
 	GLProgram *proPostProcess;
+
+	Character mainChar;
 };
 
 

@@ -1,6 +1,7 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
+#include "Classes\Animator.h"
 #include "cocos2d.h"
 
 using namespace cocos2d;
@@ -16,6 +17,7 @@ private:
 
 	int m_dir;
 	float m_speed;
+	Animator characterAnimator;
 
 public:
 	void Init(const char*, const char*, float, float);

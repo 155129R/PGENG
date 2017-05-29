@@ -38,12 +38,56 @@ bool GameScene::init()
 	// Halved of screen height
 	float halvedHeight = playingSize.height * .5f;
 
+	//Temporary Code
+	auto listener = EventListenerKeyboard::create();
+	listener->onKeyPressed = CC_CALLBACK_2(GameScene::onKeyPressed, this);
+	listener->onKeyReleased = CC_CALLBACK_2(GameScene::onKeyReleased, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
 	// Node for items
 	auto nodeItems = Node::create();
 	nodeItems->setName("nodeItems");
 	nodeItems->setPosition(0, halvedHeight);
 	this->addChild(nodeItems, 1);
+
+	auto playerNode = Node::create();
+	playerNode->setName("playerNode");
+	playerNode->setPosition(0, 0);
+	this->addChild(playerNode, 1);
+
+
+	mainChar.Init("Blue_Front1.png", "Player", 100, 500);
+	playerNode->addChild(mainChar.getSprite(), 1);
+
 	return true;
+}
+
+void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
+{
+	if (keyCode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW)
+	{
+		mainChar.MoveChar(1);
+	}
+
+	if (keyCode == EventKeyboard::KeyCode::KEY_LEFT_ARROW)
+	{
+		mainChar.MoveChar(-1);
+	}
+
+	if (keyCode == EventKeyboard::KeyCode::KEY_SPACE)
+	{
+		//CCDirector::getInstance()->replaceScene(TransitionFade::create(1.5, HelloWorld::createScene(), Color3B(0, 255, 255)));
+		SceneManager::getInstance()->runSceneWithType(CONSTANTS::SceneType::GAMEPLAY);
+	}
+}
+
+void GameScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
+{
+	if (keyCode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW ||
+		keyCode == EventKeyboard::KeyCode::KEY_LEFT_ARROW)
+	{
+		mainChar.Stop();
+	}
 }
 
 void GameScene::update(float _delta)
@@ -64,6 +108,5 @@ void GameScene::menuCloseCallback(Ref* pSender)
 
 	//EventCustom customEndEvent("game_scene_close_event");
 	//_eventDispatcher->dispatchEvent(&customEndEvent);
-
 
 }

@@ -14,6 +14,8 @@ void Character::Init(const char* _srcImg, const char* _name, float _x, float _y)
 	mLoc.set(.5f, .5f);
 	mLocInc.set(.005f, .01f);
 
+	characterAnimator.animType = Animator::NIL;
+
 	charEffect = new GLProgram();
 	charEffect->initWithFilenames("Basic.vsh", "CharEffect.fsh");
 	charEffect->bindAttribLocation(GLProgram::ATTRIBUTE_NAME_POSITION, GLProgram::VERTEX_ATTRIB_POSITION);
@@ -28,30 +30,17 @@ void Character::Init(const char* _srcImg, const char* _name, float _x, float _y)
 void Character::MoveChar(int _dir)
 {
 	m_dir = _dir;
-	m_mainSprite->stopAllActions();
-	Vector<SpriteFrame*> animFrames;
 
 	if (m_dir == -1)
 	{
-		animFrames.reserve(4);
-		animFrames.pushBack(SpriteFrame::create("Blue_Left1.png", Rect(0, 0, 59, 81)));
-		animFrames.pushBack(SpriteFrame::create("Blue_Left2.png", Rect(0, 0, 59, 81)));
-		animFrames.pushBack(SpriteFrame::create("Blue_Left1.png", Rect(0, 0, 59, 81)));
-		animFrames.pushBack(SpriteFrame::create("Blue_Left3.png", Rect(0, 0, 59, 81)));
+		characterAnimator.animType = Animator::PLAYERJUMP;
+		characterAnimator.PlayAnimation(characterAnimator.animType, this);
 	}
 	else
 	{
-		animFrames.reserve(4);
-		animFrames.pushBack(SpriteFrame::create("Blue_Right1.png", Rect(0, 0, 59, 81)));
-		animFrames.pushBack(SpriteFrame::create("Blue_Right2.png", Rect(0, 0, 59, 81)));
-		animFrames.pushBack(SpriteFrame::create("Blue_Right1.png", Rect(0, 0, 59, 81)));
-		animFrames.pushBack(SpriteFrame::create("Blue_Right3.png", Rect(0, 0, 59, 81)));
+		characterAnimator.animType = Animator::PLAYERRUN;
+		characterAnimator.PlayAnimation(characterAnimator.animType, this);
 	}
-
-
-	Animation* animation = Animation::createWithSpriteFrames(animFrames, 0.5f);
-	Animate* animate = Animate::create(animation);
-	m_mainSprite->runAction(RepeatForever::create(animate));
 }
 
 void Character::MoveCharByCoord(float _x, float _y)
@@ -111,14 +100,6 @@ void Character::Stop(void)
 	m_dir = 0;
 	m_mainSprite->stopAllActions();
 
-	Vector<SpriteFrame*> animFrames;
-	animFrames.reserve(4);
-	animFrames.pushBack(SpriteFrame::create("Blue_Front2.png", Rect(0, 0, 65, 81)));
-	animFrames.pushBack(SpriteFrame::create("Blue_Front1.png", Rect(0, 0, 65, 81)));
-	animFrames.pushBack(SpriteFrame::create("Blue_Front3.png", Rect(0, 0, 65, 81)));
-	animFrames.pushBack(SpriteFrame::create("Blue_Front1.png", Rect(0, 0, 65, 81)));
-
-	Animation* animation = Animation::createWithSpriteFrames(animFrames, 0.5f);
-	Animate* animate = Animate::create(animation);
-	m_mainSprite->runAction(RepeatForever::create(animate));
+	characterAnimator.animType = Animator::PLAYERIDLE;
+	characterAnimator.PlayAnimation(characterAnimator.animType, this);
 }
