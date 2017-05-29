@@ -1,6 +1,4 @@
 #include "AppDelegate.h"
-#include "scene\\HelloWorldScene.h"
-#include "scene\\GameScene.h"
 
 USING_NS_CC;
 
@@ -74,11 +72,14 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     register_all_packages();
 
-    // create a scene. it's an autorelease object
-    auto scene = GameScene::createScene();
+    //// create a scene. it's an autorelease object
+    //auto scene = GameScene::createScene();
 
-    // run
-    director->runWithScene(scene);
+    //// run
+    //director->runWithScene(scene);
+
+	//run scene
+	SceneManager::getInstance()->runSceneWithType(CONSTANTS::SceneType::TEST);
 
     return true;
 }

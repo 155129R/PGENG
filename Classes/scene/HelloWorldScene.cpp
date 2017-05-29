@@ -1,5 +1,6 @@
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
+#include "SceneManager.h"
 
 USING_NS_CC;
 
@@ -123,7 +124,8 @@ void HelloWorld::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 
 	if (keyCode == EventKeyboard::KeyCode::KEY_SPACE)
 	{
-		CCDirector::getInstance()->replaceScene(TransitionFade::create(1.5, HelloWorld::createScene(), Color3B(0, 255, 255)));
+		//CCDirector::getInstance()->replaceScene(TransitionFade::create(1.5, HelloWorld::createScene(), Color3B(0, 255, 255)));
+		SceneManager::getInstance()->runSceneWithType(CONSTANTS::SceneType::GAMEPLAY);
 	}
 }
 
