@@ -5,11 +5,13 @@
 
 void Animator::PlayAnimation(AnimationType animType, BaseEntity* entity)
 {
-	switch (entity->entityType)
+	if (entity->GetAlive())
 	{
-	case BaseEntity::CHARACTER:
-		switch (animType)
+		switch (entity->entityType)
 		{
+		case BaseEntity::CHARACTER:
+			switch (animType)
+			{
 			case PLAYERRUN:
 			{
 				entity->getSprite()->stopAllActions();
@@ -67,11 +69,34 @@ void Animator::PlayAnimation(AnimationType animType, BaseEntity* entity)
 				entity->getSprite()->runAction(animationJump);
 			}
 			break;
-		}
-		break;
+			}
+			break;
 
-	case BaseEntity::ENEMY:
-		break;
+		case BaseEntity::ENEMY:
+			switch (animType)
+			{
+
+			case ENEMYRUN:
+			{
+				entity->getSprite()->stopAllActions();
+
+				Vector<SpriteFrame*> animFrames;
+				animFrames.reserve(4);
+				animFrames.pushBack(SpriteFrame::create("Blue_Left2.png", Rect(0, 0, 65, 81)));
+				animFrames.pushBack(SpriteFrame::create("Blue_Left1.png", Rect(0, 0, 65, 81)));
+				animFrames.pushBack(SpriteFrame::create("Blue_Left3.png", Rect(0, 0, 65, 81)));
+				animFrames.pushBack(SpriteFrame::create("Blue_Left1.png", Rect(0, 0, 65, 81)));
+
+				Animation* animation = Animation::createWithSpriteFrames(animFrames, 0.35f);
+				Animate* animationRun = Animate::create(animation);
+
+				//  Play animation once using this code without the RepeatForever
+				// 	character->getSprite()->runAction(animationRunning);
+				entity->getSprite()->runAction(RepeatForever::create(animationRun));
+			}
+			break;
+			}
+			break;
+		}
 	}
-	
 }

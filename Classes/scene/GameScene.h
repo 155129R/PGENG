@@ -1,7 +1,8 @@
 #ifndef __GAME_SCENE_H__
 #define __GAME_SCENE_H__
 
-#include "Character.h"
+#include "BaseEntity\Character.h"
+#include "BaseEntity\Enemy.h"
 #include "cocos2d.h"
 
 using namespace cocos2d;
@@ -21,6 +22,8 @@ public:
 	
 	virtual void update(float);
 
+	void SpawnEnemy(int);
+
 	// implement the "static create()" method manually
 	CREATE_FUNC(GameScene);
 
@@ -28,6 +31,18 @@ private:
 	GLProgram *proPostProcess;
 
 	Character mainChar;
+	std::vector<Enemy*> enemyList;
+	float spawnTimer;
+
+	//to check if all enemy are on screen
+	bool allEnemyALive;
+
+	//for storing number of should spawn random enemy 
+	int tempRandom;
+	
+	//for getting window screen
+	Size playingSize;
+	
 };
 
 

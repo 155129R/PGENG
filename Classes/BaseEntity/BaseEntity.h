@@ -8,6 +8,7 @@ protected:
 	int m_dir;
 	float m_speed;
 	Sprite* m_mainSprite;
+	bool isAlive;
 
 public:
 
@@ -22,7 +23,9 @@ public:
 	virtual int GetDirection();
 	virtual float GetSpeed();
 	virtual Animator GetAnimator();
+	virtual bool GetAlive();
 
+	virtual void SetAlive(bool);
 	virtual void SetDirection(int );
 	virtual void SetSpeed(float );
 	virtual void SetAnimator(Animator );

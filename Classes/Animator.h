@@ -17,6 +17,7 @@ public:
 		PLAYERRUN,
 		PLAYERIDLE,
 		PLAYERJUMP,
+		ENEMYRUN,
 		MAX
 	}animType;
 

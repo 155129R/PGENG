@@ -18,6 +18,8 @@ void Character::Init(const char* _srcImg, const char* _name, float _x, float _y)
 
 	animator.animType = Animator::NIL;
 
+	isAlive = true;
+
 	charEffect = new GLProgram();
 	charEffect->initWithFilenames("Basic.vsh", "CharEffect.fsh");
 	charEffect->bindAttribLocation(GLProgram::ATTRIBUTE_NAME_POSITION, GLProgram::VERTEX_ATTRIB_POSITION);
@@ -90,7 +92,7 @@ void Character::Update(float _dt)
 		auto moveEvent = MoveBy::create(0.f, Vec2(m_dir, 0.f) * m_speed);
 		m_mainSprite->runAction(moveEvent);
 	}
-
+	printf("hello");
 	GLProgramState* state = GLProgramState::getOrCreateWithGLProgram(charEffect);
 	m_mainSprite->setGLProgram(charEffect);
 	m_mainSprite->setGLProgramState(state);

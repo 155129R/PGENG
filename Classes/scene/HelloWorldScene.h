@@ -2,7 +2,7 @@
 #define __HELLOWORLD_SCENE_H__
 
 #include "cocos2d.h"
-#include "Character.h"
+#include "BaseEntity\Character.h"
 
 using namespace cocos2d;
 

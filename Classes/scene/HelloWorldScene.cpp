@@ -158,6 +158,7 @@ void HelloWorld::update(float _delta)
 	rendtexSprite->setGLProgram(proPostProcess);
 
 	mainChar.Update(_delta);
+
 }
 
 void HelloWorld::menuCloseCallback(Ref* pSender)

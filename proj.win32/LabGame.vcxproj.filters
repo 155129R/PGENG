@@ -16,6 +16,9 @@
     <Filter Include="Constants">
       <UniqueIdentifier>{5eda3eaf-83bc-47fd-9bb8-af7ffc6cdb08}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BaseEntity">
+      <UniqueIdentifier>{a3e9db2e-bede-4cd2-a436-6188a6baa9cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -32,8 +35,15 @@
     </ClCompile>
     <ClCompile Include="..\Classes\scene\SceneManager.cpp" />
     <ClCompile Include="..\Classes\Animator.cpp" />
-    <ClCompile Include="..\Classes\BaseEntity\BaseEntity.cpp" />
-    <ClCompile Include="..\Classes\BaseEntity\Character.cpp" />
+    <ClCompile Include="..\Classes\BaseEntity\BaseEntity.cpp">
+      <Filter>BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\BaseEntity\Character.cpp">
+      <Filter>BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\BaseEntity\Enemy.cpp">
+      <Filter>BaseEntity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -53,8 +63,15 @@
       <Filter>Constants</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Animator.h" />
-    <ClInclude Include="..\Classes\BaseEntity\BaseEntity.h" />
-    <ClInclude Include="..\Classes\BaseEntity\Character.h" />
+    <ClInclude Include="..\Classes\BaseEntity\Character.h">
+      <Filter>BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BaseEntity\BaseEntity.h">
+      <Filter>BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BaseEntity\Enemy.h">
+      <Filter>BaseEntity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

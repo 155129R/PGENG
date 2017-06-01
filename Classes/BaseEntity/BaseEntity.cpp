@@ -28,3 +28,13 @@ void BaseEntity::SetAnimator(Animator anim)
 {
 	animator = anim;
 }
+
+bool BaseEntity::GetAlive()
+{
+	return isAlive;
+}
+
+void BaseEntity::SetAlive(bool status)
+{
+	isAlive = status;
+}
