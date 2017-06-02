@@ -66,7 +66,7 @@ bool GameScene::init()
 	input.BindCommandAndKey(Input_Game::MOVE_RIGHT, new CharacterActionCommand(&Character::MoveRight, &mainChar, Input_Action::PRESSED), (int)EventKeyboard::KeyCode::KEY_D);
 	input.BindCommandAndKey(Input_Game::MOVE_LEFT, new CharacterActionCommand(&Character::MoveLeft, &mainChar, Input_Action::PRESSED), (int)EventKeyboard::KeyCode::KEY_A);
 	input.BindCommandAndKey(Input_Game::STOP_ACTION, new CharacterActionCommand(&Character::Stop, &mainChar, Input_Action::RELEASED), (int)EventKeyboard::KeyCode::KEY_D);
-	//input.BindCommandAndKey(Input_Game::STOP_ACTION, new CharacterActionCommand(&Character::Stop, &mainChar, Input_Action::RELEASED), (int)EventKeyboard::KeyCode::KEY_A);
+	input.BindCommandAndKey(Input_Game::STOP_ACTION, new CharacterActionCommand(&Character::Stop, &mainChar, Input_Action::RELEASED), (int)EventKeyboard::KeyCode::KEY_A);
 
 
 	for (int i = 0; i < 8; i++)

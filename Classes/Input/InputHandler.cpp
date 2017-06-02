@@ -3,11 +3,7 @@
 
 InputHandler::InputHandler()
 {
-	for (int i = 0; i < Input_Game::GAME_INPUT_MAX; ++i)
-	{
-		commands[i] = nullptr;
-		keybinds[i].clear();
-	}
+	
 }
 
 
@@ -15,14 +11,22 @@ InputHandler::~InputHandler()
 {
 	for (int i = 0; i < Input_Game::GAME_INPUT_MAX; ++i)
 	{
-		if (commands[i])
-			delete commands[i];
+		keybinds[i].clear();
+
+		vector<InputCommandBase*>::iterator it = commands[i].begin();
+		vector<InputCommandBase*>::iterator end = commands[i].end();
+
+		while (it != end)
+		{
+			delete *it;
+			it = commands[i].erase(it);
+		}
 	}
 }
 
 void InputHandler::BindCommand(Input_Game _gameInput, InputCommandBase *_command)
 {
-	commands[_gameInput] = _command;
+	commands[_gameInput].push_back(_command);
 }
 
 void InputHandler::BindKeyToCommand(Input_Game _gameInput, int keyCode)
@@ -62,17 +66,36 @@ void InputHandler::DecipherKeyPressed()
 		int key = keyPressed.front();
 		for (int i = 0; i < Input_Game::GAME_INPUT_MAX; ++i)
 		{
+			// Checks if key exist in keybinds
 			vector<int>::iterator it = std::find(keybinds[i].begin(), keybinds[i].end(), key);
+ 
 			if (it != keybinds[i].end())
 			{
-				if (commands[i]->GetInputType() == Input_Type::ACTION)
+				vector<InputCommandBase*>::iterator commIt = commands[i].begin();
+				vector<InputCommandBase*>::iterator commEnd = commands[i].end();
+
+				// Cycle through commands that are tied to this keybind
+				while (commIt != commEnd)
 				{
-					ActionCommand *action = (ActionCommand*)commands[i];
-					if (action->GetActionState() == Input_Action::PRESSED)
-						actionQueue.push(commands[i]);
+					// Check input type
+					switch ((*commIt)->GetInputType())
+					{
+					case Input_Type::ACTION:
+						{
+							ActionCommand *action = (ActionCommand*)(*commIt);
+							if (action->GetActionState() == Input_Action::PRESSED)
+								actionQueue.push(action);
+						}
+						break;
+					case Input_Type::STATE:
+						stateList.push_back((*commIt));
+						break;
+					case Input_Type::RANGE:
+						break;
+					}
+					
+					commIt++;
 				}
-				else
-					stateList.push_back(commands[i]);
 			}
 		}
 		keyPressed.pop();
@@ -87,18 +110,33 @@ void InputHandler::DecipherKeyReleased()
 		int key = keyReleased.front();
 		for (int i = 0; i < Input_Game::GAME_INPUT_MAX; ++i)
 		{
+			// Checks if key exist in keybinds
 			vector<int>::iterator it = std::find(keybinds[i].begin(), keybinds[i].end(), key);
 			if (it != keybinds[i].end())
 			{
-				if (commands[i]->GetInputType() == Input_Type::ACTION)
+				vector<InputCommandBase*>::iterator commIt = commands[i].begin();
+				vector<InputCommandBase*>::iterator commEnd = commands[i].end();
+
+				// Cycle through commands that are tied to this keybind
+				while (commIt != commEnd)
 				{
-					ActionCommand *action = (ActionCommand*)commands[i];
-					if (action->GetActionState() == Input_Action::RELEASED)
-						actionQueue.push(commands[i]);
-				}
-				else
-				{
-					stateList.remove(commands[i]);
+					// Check input type
+					switch ((*commIt)->GetInputType())
+					{
+					case Input_Type::ACTION:
+						{
+							ActionCommand *action = (ActionCommand*)(*commIt);
+							if (action->GetActionState() == Input_Action::RELEASED)
+								actionQueue.push(action);
+						}
+						break;
+					case Input_Type::STATE:
+						stateList.push_back((*commIt));
+						break;
+					case Input_Type::RANGE:
+						break;
+					}
+					commIt++;
 				}
 			}
 		}

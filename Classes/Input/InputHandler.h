@@ -16,7 +16,7 @@ using std::vector;
 
 class InputHandler
 {
-	InputCommandBase *commands[Input_Game::GAME_INPUT_MAX];
+	vector<InputCommandBase*> commands[Input_Game::GAME_INPUT_MAX];
 	vector<int> keybinds[Input_Game::GAME_INPUT_MAX];
 
 	queue<int> keyPressed;
