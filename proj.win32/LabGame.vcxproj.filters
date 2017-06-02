@@ -19,6 +19,12 @@
     <Filter Include="BaseEntity">
       <UniqueIdentifier>{a3e9db2e-bede-4cd2-a436-6188a6baa9cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{b47fa767-7258-44c9-8116-1d0a4c7225cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Command">
+      <UniqueIdentifier>{d72e1436-5a43-4a12-85d8-43aa2ae192e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -43,6 +49,9 @@
     </ClCompile>
     <ClCompile Include="..\Classes\BaseEntity\Enemy.cpp">
       <Filter>BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Input\InputHandler.cpp">
+      <Filter>Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -71,6 +80,30 @@
     </ClInclude>
     <ClInclude Include="..\Classes\BaseEntity\Enemy.h">
       <Filter>BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Constants\InputConstant.h">
+      <Filter>Constants</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Input\InputHandler.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Commands\ActionCommand.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Commands\Command.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Commands\InputCommandBase.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Commands\StateCommand.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Commands\CharacterActionCommand.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Commands\CharacterStateCommand.h">
+      <Filter>Command</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

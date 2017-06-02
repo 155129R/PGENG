@@ -79,7 +79,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     //director->runWithScene(scene);
 
 	//run scene
-	SceneManager::getInstance()->runSceneWithType(CONSTANTS::SceneType::TEST);
+	SceneManager::getInstance()->runSceneWithType(CONSTANTS::SceneType::GAMEPLAY);
 
     return true;
 }

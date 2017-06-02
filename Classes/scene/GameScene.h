@@ -3,6 +3,7 @@
 
 #include "BaseEntity\Character.h"
 #include "BaseEntity\Enemy.h"
+#include "Input\InputHandler.h"
 #include "cocos2d.h"
 
 using namespace cocos2d;
@@ -31,6 +32,7 @@ private:
 	GLProgram *proPostProcess;
 
 	Character mainChar;
+	InputHandler input;
 	std::vector<Enemy*> enemyList;
 	float spawnTimer;
 

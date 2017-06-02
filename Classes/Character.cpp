@@ -1,7 +1,6 @@
 #include "Character.h"
 #include "scene\\HelloWorldScene.h"
 
-
 void Character::Init(const char* _srcImg, const char* _name, float _x, float _y)
 {
 	m_mainSprite = Sprite::create(_srcImg);
@@ -13,12 +12,6 @@ void Character::Init(const char* _srcImg, const char* _name, float _x, float _y)
 
 	mLoc.set(.5f, .5f);
 	mLocInc.set(.005f, .01f);
-
-	entityType = EntityType::CHARACTER;
-
-	animator.animType = Animator::NIL;
-
-	isAlive = true;
 
 	charEffect = new GLProgram();
 	charEffect->initWithFilenames("Basic.vsh", "CharEffect.fsh");
@@ -34,17 +27,51 @@ void Character::Init(const char* _srcImg, const char* _name, float _x, float _y)
 void Character::MoveChar(int _dir)
 {
 	m_dir = _dir;
+	m_mainSprite->stopAllActions();
+	Vector<SpriteFrame*> animFrames;
 
 	if (m_dir == -1)
 	{
-		animator.animType = Animator::PLAYERJUMP;
-		animator.PlayAnimation(animator.animType, (BaseEntity*)this);
+		animFrames.reserve(4);
+		animFrames.pushBack(SpriteFrame::create("Blue_Left1.png", Rect(0, 0, 59, 81)));
+		animFrames.pushBack(SpriteFrame::create("Blue_Left2.png", Rect(0, 0, 59, 81)));
+		animFrames.pushBack(SpriteFrame::create("Blue_Left1.png", Rect(0, 0, 59, 81)));
+		animFrames.pushBack(SpriteFrame::create("Blue_Left3.png", Rect(0, 0, 59, 81)));
 	}
 	else
 	{
-		animator.animType = Animator::PLAYERRUN;
-		animator.PlayAnimation(animator.animType, (BaseEntity*)this);
+		animFrames.reserve(4);
+		animFrames.pushBack(SpriteFrame::create("Blue_Right1.png", Rect(0, 0, 59, 81)));
+		animFrames.pushBack(SpriteFrame::create("Blue_Right2.png", Rect(0, 0, 59, 81)));
+		animFrames.pushBack(SpriteFrame::create("Blue_Right1.png", Rect(0, 0, 59, 81)));
+		animFrames.pushBack(SpriteFrame::create("Blue_Right3.png", Rect(0, 0, 59, 81)));
 	}
+
+
+	Animation* animation = Animation::createWithSpriteFrames(animFrames, 0.5f);
+	Animate* animate = Animate::create(animation);
+	m_mainSprite->runAction(RepeatForever::create(animate));
+}
+
+void Character::MoveRight()
+{
+	m_dir = 1;
+	/*m_mainSprite->stopAllActions();
+	Vector<SpriteFrame*> animFrames;
+
+	animFrames.reserve(4);
+	animFrames.pushBack(SpriteFrame::create("Blue_Right1.png", Rect(0, 0, 59, 81)));
+	animFrames.pushBack(SpriteFrame::create("Blue_Right2.png", Rect(0, 0, 59, 81)));
+	animFrames.pushBack(SpriteFrame::create("Blue_Right1.png", Rect(0, 0, 59, 81)));
+	animFrames.pushBack(SpriteFrame::create("Blue_Right3.png", Rect(0, 0, 59, 81)));
+
+
+	Animation* animation = Animation::createWithSpriteFrames(animFrames, 0.5f);
+	Animate* animate = Animate::create(animation);
+	m_mainSprite->runAction(RepeatForever::create(animate));*/
+
+	auto moveEvent = MoveBy::create(0.f, Vec2(m_dir, 0.f) * m_speed);
+	m_mainSprite->runAction(moveEvent);
 }
 
 void Character::MoveCharByCoord(float _x, float _y)
@@ -87,12 +114,13 @@ void Character::MoveCharByCoord(float _x, float _y)
 
 void Character::Update(float _dt)
 {
-	if (m_dir != 0)
+	MoveRight();
+	/*if (m_dir != 0)
 	{
 		auto moveEvent = MoveBy::create(0.f, Vec2(m_dir, 0.f) * m_speed);
 		m_mainSprite->runAction(moveEvent);
-	}
-	printf("hello");
+	}*/
+
 	GLProgramState* state = GLProgramState::getOrCreateWithGLProgram(charEffect);
 	m_mainSprite->setGLProgram(charEffect);
 	m_mainSprite->setGLProgramState(state);
@@ -104,16 +132,14 @@ void Character::Stop(void)
 	m_dir = 0;
 	m_mainSprite->stopAllActions();
 
-	animator.animType = Animator::PLAYERIDLE;
-	animator.PlayAnimation(animator.animType, (BaseEntity*)this);
-}
+	Vector<SpriteFrame*> animFrames;
+	animFrames.reserve(4);
+	animFrames.pushBack(SpriteFrame::create("Blue_Front2.png", Rect(0, 0, 65, 81)));
+	animFrames.pushBack(SpriteFrame::create("Blue_Front1.png", Rect(0, 0, 65, 81)));
+	animFrames.pushBack(SpriteFrame::create("Blue_Front3.png", Rect(0, 0, 65, 81)));
+	animFrames.pushBack(SpriteFrame::create("Blue_Front1.png", Rect(0, 0, 65, 81)));
 
-void Character::MoveRight()
-{
-	MoveChar(1);
-}
-
-void Character::MoveLeft()
-{
-	MoveChar(-1);
+	Animation* animation = Animation::createWithSpriteFrames(animFrames, 0.5f);
+	Animate* animate = Animate::create(animation);
+	m_mainSprite->runAction(RepeatForever::create(animate));
 }

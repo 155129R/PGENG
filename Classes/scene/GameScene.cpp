@@ -2,6 +2,9 @@
 #include "SimpleAudioEngine.h"
 #include "SceneManager.h"
 
+#include "Commands\CharacterActionCommand.h"
+#include "Commands\CharacterStateCommand.h"
+
 ///////////////////////////CTRL F (Update not running)
 USING_NS_CC;
 
@@ -59,6 +62,13 @@ bool GameScene::init()
 	mainChar.Init("Blue_Front1.png", "Player", 100, 500);
 	playerNode->addChild(mainChar.getSprite(), 1);
 
+	// Input control setup
+	input.BindCommandAndKey(Input_Game::MOVE_RIGHT, new CharacterActionCommand(&Character::MoveRight, &mainChar, Input_Action::PRESSED), (int)EventKeyboard::KeyCode::KEY_D);
+	input.BindCommandAndKey(Input_Game::MOVE_LEFT, new CharacterActionCommand(&Character::MoveLeft, &mainChar, Input_Action::PRESSED), (int)EventKeyboard::KeyCode::KEY_A);
+	input.BindCommandAndKey(Input_Game::STOP_ACTION, new CharacterActionCommand(&Character::Stop, &mainChar, Input_Action::RELEASED), (int)EventKeyboard::KeyCode::KEY_D);
+	//input.BindCommandAndKey(Input_Game::STOP_ACTION, new CharacterActionCommand(&Character::Stop, &mainChar, Input_Action::RELEASED), (int)EventKeyboard::KeyCode::KEY_A);
+
+
 	for (int i = 0; i < 8; i++)
 	{
 		auto enemyNode = Node::create();
@@ -84,30 +94,17 @@ bool GameScene::init()
 
 void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
-	if (keyCode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW)
-	{
-		mainChar.MoveChar(1);
-	}
-
-	if (keyCode == EventKeyboard::KeyCode::KEY_LEFT_ARROW)
-	{
-		mainChar.MoveChar(-1);
-	}
-
-	if (keyCode == EventKeyboard::KeyCode::KEY_SPACE)
-	{
-		//CCDirector::getInstance()->replaceScene(TransitionFade::create(1.5, HelloWorld::createScene(), Color3B(0, 255, 255)));
-		SceneManager::getInstance()->runSceneWithType(CONSTANTS::SceneType::GAMEPLAY);
-	}
+	input.EnqueueKeyPressed((int)keyCode);
+	//if (keyCode == EventKeyboard::KeyCode::KEY_SPACE)
+	//{
+	//	//CCDirector::getInstance()->replaceScene(TransitionFade::create(1.5, HelloWorld::createScene(), Color3B(0, 255, 255)));
+	//	SceneManager::getInstance()->runSceneWithType(CONSTANTS::SceneType::GAMEPLAY);
+	//}
 }
 
 void GameScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 {
-	if (keyCode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW ||
-		keyCode == EventKeyboard::KeyCode::KEY_LEFT_ARROW)
-	{
-		mainChar.Stop();
-	}
+	input.EnqueueKeyReleased((int)keyCode);
 }
 
 void GameScene::SpawnEnemy(int numberOfEnemy)
@@ -139,6 +136,8 @@ void GameScene::update(float _delta)
 	}
 	for (auto enemy : enemyList)
 		enemy->Update(_delta, mainChar);
+
+	input.RunCommands();
 }
 
 void GameScene::menuCloseCallback(Ref* pSender)

@@ -112,16 +112,6 @@ bool HelloWorld::init()
 
 void HelloWorld::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
-	if (keyCode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW)
-	{
-		mainChar.MoveChar(1);
-	}
-
-	if (keyCode == EventKeyboard::KeyCode::KEY_LEFT_ARROW)
-	{
-		mainChar.MoveChar(-1);
-	}
-
 	if (keyCode == EventKeyboard::KeyCode::KEY_SPACE)
 	{
 		//CCDirector::getInstance()->replaceScene(TransitionFade::create(1.5, HelloWorld::createScene(), Color3B(0, 255, 255)));
@@ -131,11 +121,6 @@ void HelloWorld::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 
 void HelloWorld::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 {
-	if (keyCode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW ||
-		keyCode == EventKeyboard::KeyCode::KEY_LEFT_ARROW)
-	{
-		mainChar.Stop();
-	}
 }
 
 void HelloWorld::onMouseDown(Event* event)
