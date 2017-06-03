@@ -13,13 +13,18 @@ InputHandler::~InputHandler()
 	{
 		keybinds[i].clear();
 
-		vector<InputCommandBase*>::iterator it = commands[i].begin();
-		vector<InputCommandBase*>::iterator end = commands[i].end();
-
-		while (it != end)
+		if (!commands[i].empty())
 		{
-			delete *it;
-			it = commands[i].erase(it);
+			vector<InputCommandBase*>::iterator it = commands[i].begin();
+			vector<InputCommandBase*>::iterator end = commands[i].end();
+
+			while (it != end)
+			{
+				delete *it;
+				it++;
+			}
+
+			commands[i].clear();
 		}
 	}
 }
