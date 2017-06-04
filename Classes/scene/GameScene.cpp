@@ -59,7 +59,7 @@ bool GameScene::init()
 	playerNode->setPosition(0, 0);
 	this->addChild(playerNode, 1);
 
-	mainChar.Init("Blue_Front1.png", "Player", 100, 500);
+	mainChar.Init("Blue_Front1.png", "Player", 0, 0);
 	playerNode->addChild(mainChar.getSprite(), 1);
 
 	// Input control setup
@@ -68,6 +68,24 @@ bool GameScene::init()
 	input.BindCommandAndKey(Input_Game::STOP_ACTION, new CharacterActionCommand(&Character::Stop, &mainChar, Input_Action::RELEASED), (int)EventKeyboard::KeyCode::KEY_D);
 	input.BindCommandAndKey(Input_Game::STOP_ACTION, new CharacterActionCommand(&Character::Stop, &mainChar, Input_Action::RELEASED), (int)EventKeyboard::KeyCode::KEY_A);
 
+	// Load background
+	auto backgroundNode1 = Node::create();
+	auto backgroundNode2 = Node::create();
+	this->addChild(backgroundNode1, 0);
+	this->addChild(backgroundNode2, 0);
+
+	backgroundNode1->setName("backgroundNode1");
+	backgroundNode2->setName("backgroundNode2");
+	backgroundNode1->setPosition(0, 0);
+	backgroundNode2->setPosition(0, 0);
+
+	background.Init(visibleSize.width, visibleSize.height, 5.f);
+	background.AddImage("desert", "Background/desert_bg.png");
+	background.AddImage("town", "Background/town_bg.png");
+	background.SetStartingBackground("desert");
+
+	backgroundNode1->addChild(background.buffers[0], 0);
+	backgroundNode2->addChild(background.buffers[1], 0);
 
 	for (int i = 0; i < 8; i++)
 	{
@@ -84,7 +102,7 @@ bool GameScene::init()
 		enemyList.push_back(newEnemy);
 	}
 
-	spawnTimer = (float)(cocos2d::RandomHelper::random_int(1, 5));
+	spawnTimer = (float)(cocos2d::RandomHelper::random_int(5, 5));
 	tempRandom = 0;
 	allEnemyALive = false;
 
@@ -123,11 +141,12 @@ void GameScene::SpawnEnemy(int numberOfEnemy)
 void GameScene::update(float _delta)
 {
 	spawnTimer -= _delta;
+	background.Update(_delta);
 	if (spawnTimer <= 0.0f && !allEnemyALive)
 	{
 		//For Debug
 		spawnTimer = 0.2f;
-	
+
 		//For Playtest
 		//spawnTimer = (float)(cocos2d::RandomHelper::random_int(1, 5));
 

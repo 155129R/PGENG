@@ -4,6 +4,7 @@
 #include "BaseEntity\Character.h"
 #include "BaseEntity\Enemy.h"
 #include "Input\InputHandler.h"
+#include "Background\ScrollingBackground.h"
 #include "cocos2d.h"
 
 using namespace cocos2d;
@@ -30,9 +31,11 @@ public:
 
 private:
 	GLProgram *proPostProcess;
+	InputHandler input;
+	ScrollingBackground background;
 
 	Character mainChar;
-	InputHandler input;
+
 	std::vector<Enemy*> enemyList;
 	float spawnTimer;
 
