@@ -25,6 +25,9 @@
     <Filter Include="Command">
       <UniqueIdentifier>{d72e1436-5a43-4a12-85d8-43aa2ae192e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Background">
+      <UniqueIdentifier>{83850a9a-a4ab-4abe-84ad-4250469649af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -52,6 +55,9 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Input\InputHandler.cpp">
       <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Background\ScrollingBackground.cpp">
+      <Filter>Background</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -104,6 +110,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Commands\CharacterStateCommand.h">
       <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Background\ScrollingBackground.h">
+      <Filter>Background</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

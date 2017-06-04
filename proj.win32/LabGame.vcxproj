@@ -146,6 +146,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
   <ItemGroup>
     <ClCompile Include="..\Classes\Animator.cpp" />
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
+    <ClCompile Include="..\Classes\Background\ScrollingBackground.cpp" />
     <ClCompile Include="..\Classes\BaseEntity\BaseEntity.cpp" />
     <ClCompile Include="..\Classes\BaseEntity\Character.cpp" />
     <ClCompile Include="..\Classes\BaseEntity\Enemy.cpp" />
@@ -158,6 +159,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
   <ItemGroup>
     <ClInclude Include="..\Classes\Animator.h" />
     <ClInclude Include="..\Classes\AppDelegate.h" />
+    <ClInclude Include="..\Classes\Background\ScrollingBackground.h" />
     <ClInclude Include="..\Classes\BaseEntity\BaseEntity.h" />
     <ClInclude Include="..\Classes\BaseEntity\Character.h" />
     <ClInclude Include="..\Classes\BaseEntity\Enemy.h" />
