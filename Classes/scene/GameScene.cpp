@@ -59,7 +59,7 @@ bool GameScene::init()
 	playerNode->setPosition(0, 0);
 	this->addChild(playerNode, 1);
 
-	mainChar.Init("Blue_Front1.png", "Player", 0, 0);
+	mainChar.Init("Blue_Front1.png", "Player", 80, 60);
 	playerNode->addChild(mainChar.getSprite(), 1);
 
 	// Input control setup
@@ -79,10 +79,13 @@ bool GameScene::init()
 	backgroundNode1->setPosition(0, 0);
 	backgroundNode2->setPosition(0, 0);
 
-	background.Init(visibleSize.width, visibleSize.height, 5.f);
-	background.AddImage("desert", "Background/desert_bg.png");
-	background.AddImage("town", "Background/town_bg.png");
-	background.SetStartingBackground("desert");
+	background.Init(visibleSize.width, visibleSize.height, 3.f);
+	background.AddImage("day", "Background/city_day.png");
+	background.AddImage("noon", "Background/city_noon.png");
+	background.AddImage("night", "Background/city_night.png");
+	background.SetStartingBackground("day");
+	background.QueueNextBackground("noon");
+	background.QueueNextBackground("night");
 
 	backgroundNode1->addChild(background.buffers[0], 0);
 	backgroundNode2->addChild(background.buffers[1], 0);
