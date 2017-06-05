@@ -104,7 +104,7 @@ void Character::Stop(void)
 	m_dir = 0;
 	m_mainSprite->stopAllActions();
 
-	animator.animType = Animator::PLAYERIDLE;
+	animator.animType = Animator::PLAYERRUN;
 	animator.PlayAnimation(animator.animType, (BaseEntity*)this);
 }
 

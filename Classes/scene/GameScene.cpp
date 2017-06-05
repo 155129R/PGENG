@@ -90,7 +90,7 @@ bool GameScene::init()
 	backgroundNode1->addChild(background.buffers[0], 0);
 	backgroundNode2->addChild(background.buffers[1], 0);
 
-	for (int i = 0; i < 8; i++)
+	for (int i = 1; i < 9; i++)
 	{
 		auto enemyNode = Node::create();
 		enemyNode->setName("enemyNode");
@@ -148,10 +148,10 @@ void GameScene::update(float _delta)
 	if (spawnTimer <= 0.0f && !allEnemyALive)
 	{
 		//For Debug
-		spawnTimer = 0.2f;
+		//spawnTimer = 0.2f;
 
 		//For Playtest
-		//spawnTimer = (float)(cocos2d::RandomHelper::random_int(1, 5));
+		spawnTimer = (float)(cocos2d::RandomHelper::random_int(1, 5));
 
 		tempRandom = cocos2d::RandomHelper::random_int(1, 7);
 		SpawnEnemy(tempRandom);
