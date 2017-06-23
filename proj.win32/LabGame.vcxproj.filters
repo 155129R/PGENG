@@ -59,6 +59,9 @@
     <ClCompile Include="..\Classes\Background\ScrollingBackground.cpp">
       <Filter>Background</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Background\ParallaxBackground.cpp">
+      <Filter>Background</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -112,6 +115,9 @@
       <Filter>Command</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Background\ScrollingBackground.h">
+      <Filter>Background</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Background\ParallaxBackground.h">
       <Filter>Background</Filter>
     </ClInclude>
   </ItemGroup>

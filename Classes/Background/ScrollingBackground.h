@@ -13,8 +13,7 @@ using namespace cocos2d;
 class ScrollingBackground
 {
 public:
-	float scrollSpeed;
-	Sprite* buffers[2];
+	Node* node[2];
 
 	ScrollingBackground();
 	ScrollingBackground(int _screenWidth, int _screenHeight, float _scrollSpeed);
@@ -22,8 +21,12 @@ public:
 
 	void Init(int _screenWidth, int _screenHeight, float _scrollSpeed);
 	void Update(float _deltaTime);
+	
 	void SetScreenSize(int _screenWidth, int _screenHeight);
 	void SetStartingBackground(std::string name);
+	void SetScrollSpeed(float _scrollSpeed);
+	void SetScrollSpeedByTime(float seconds);
+
 	void AddImage(std::string name, std::string fileLocation);
 	void AddImageContainer(std::vector<Texture2D*> container);
 	void QueueNextBackground(int index);
@@ -33,9 +36,12 @@ private:
 	std::map<std::string, Texture2D*> imageMap;
 	std::vector<Texture2D*> imageContainer;
 	std::queue<Texture2D*> imageQueue;
+	Sprite* buffers[2];
 
 	float screenWidth;
 	float screenHeight;
+	Size imageSize;
+	float scrollSpeed;
 	int currIndex;
 	int nextIndex;
 

@@ -3,9 +3,10 @@
 #define BUFFER_LENGTH 2
 #define BIAS 3
 
+#include <string>
+
 ScrollingBackground::ScrollingBackground()
 {
-	Init(0.f, 0.f, 0.f);
 }
 
 ScrollingBackground::ScrollingBackground(int _screenWidth, int _screenHeight, float _scrollSpeed)
@@ -28,6 +29,15 @@ void ScrollingBackground::Init(int _screenWidth, int _screenHeight, float _scrol
 	buffers[0] = Sprite::create();
 	buffers[1] = Sprite::create();
 	buffers[1]->setPosition(_screenWidth, 0);
+	
+	node[0] = Node::create();
+	node[1] = Node::create();
+	node[0]->setName("scrollingBackground_1");
+	node[1]->setName("scrollingBackground_2");
+	node[0]->setPosition(0, 0);
+	node[1]->setPosition(0, 0);
+	node[0]->addChild(buffers[0], 0);
+	node[1]->addChild(buffers[1], 0);
 }
 
 void ScrollingBackground::Update(float _deltaTime)
@@ -65,6 +75,17 @@ void ScrollingBackground::SetStartingBackground(std::string name)
 	ResetNextStartPosition();
 }
 
+void ScrollingBackground::SetScrollSpeed(float _scrollSpeed)
+{
+	scrollSpeed = _scrollSpeed;
+}
+
+void ScrollingBackground::SetScrollSpeedByTime(float seconds)
+{
+	scrollSpeed = imageSize.width / seconds;
+
+}
+
 void ScrollingBackground::AddImage(std::string name, std::string fileLocation)
 {
 	Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(fileLocation);
@@ -100,12 +121,12 @@ void ScrollingBackground::ScrollBackgrounds(float _deltaTime)
 bool ScrollingBackground::CheckCurrentLimit()
 {
 	auto pos = buffers[currIndex]->getPosition();
+	
 	Size size = buffers[currIndex]->getContentSize();
 	float halvedSize = -size.width * .5f;
-	if (pos.x < halvedSize + BIAS)
-	{
+
+	if (pos.x <= halvedSize + BIAS)
 		return true;
-	}
 	return false;
 }
 
@@ -138,6 +159,7 @@ void ScrollingBackground::LoadTextureToBuffer(int index, Texture2D* texture)
 	Size newSize = Size::ZERO;
 	newSize.height = screenHeight;
 	newSize.width = (newSize.height / textureSize.height) * textureSize.width;
+	imageSize = newSize;
 	rect.size = newSize;
 
 	buffers[index]->initWithTexture(texture);

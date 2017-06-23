@@ -69,26 +69,38 @@ bool GameScene::init()
 	input.BindCommandAndKey(Input_Game::STOP_ACTION, new CharacterActionCommand(&Character::Stop, &mainChar, Input_Action::RELEASED), (int)EventKeyboard::KeyCode::KEY_A);
 
 	// Load background
-	auto backgroundNode1 = Node::create();
-	auto backgroundNode2 = Node::create();
-	this->addChild(backgroundNode1, 0);
-	this->addChild(backgroundNode2, 0);
+	parallaxBackground.Init(1200.f);
+	this->addChild(parallaxBackground.node);
 
-	backgroundNode1->setName("backgroundNode1");
-	backgroundNode2->setName("backgroundNode2");
-	backgroundNode1->setPosition(0, 0);
-	backgroundNode2->setPosition(0, 0);
+	ScrollingBackground* background = new ScrollingBackground();
+	background->Init(visibleSize.width, visibleSize.height, 3.f);
+	background->AddImage("hills_0", "Background/hills_0.png");
+	background->SetStartingBackground("hills_0");
+	parallaxBackground.AddBackground(0, background);
 
-	background.Init(visibleSize.width, visibleSize.height, 3.f);
-	background.AddImage("day", "Background/city_day.png");
-	background.AddImage("noon", "Background/city_noon.png");
-	background.AddImage("night", "Background/city_night.png");
-	background.SetStartingBackground("day");
-	background.QueueNextBackground("noon");
-	background.QueueNextBackground("night");
+	background = new ScrollingBackground();
+	background->Init(visibleSize.width, visibleSize.height, 3.f);
+	background->AddImage("hills_1", "Background/hills_1.png");
+	background->SetStartingBackground("hills_1");
+	parallaxBackground.AddBackground(1, background);
 
-	backgroundNode1->addChild(background.buffers[0], 0);
-	backgroundNode2->addChild(background.buffers[1], 0);
+	background = new ScrollingBackground();
+	background->Init(visibleSize.width, visibleSize.height, 3.f);
+	background->AddImage("hills_2", "Background/hills_2.png");
+	background->SetStartingBackground("hills_2");
+	parallaxBackground.AddBackground(2, background);
+
+	background = new ScrollingBackground();
+	background->Init(visibleSize.width, visibleSize.height, 3.f);
+	background->AddImage("hills_3", "Background/hills_3.png");
+	background->SetStartingBackground("hills_3");
+	parallaxBackground.AddBackground(3, background);
+
+	background = new ScrollingBackground();
+	background->Init(visibleSize.width, visibleSize.height, 3.f);
+	background->AddImage("hills_4", "Background/hills_4.png");
+	background->SetStartingBackground("hills_4");
+	parallaxBackground.AddBackground(4, background);
 
 	for (int i = 1; i < 9; i++)
 	{
@@ -144,7 +156,7 @@ void GameScene::SpawnEnemy(int numberOfEnemy)
 void GameScene::update(float _delta)
 {
 	spawnTimer -= _delta;
-	background.Update(_delta);
+	parallaxBackground.Update(_delta);
 	if (spawnTimer <= 0.0f && !allEnemyALive)
 	{
 		//For Debug

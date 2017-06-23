@@ -4,7 +4,7 @@
 #include "BaseEntity\Character.h"
 #include "BaseEntity\Enemy.h"
 #include "Input\InputHandler.h"
-#include "Background\ScrollingBackground.h"
+#include "Background\ParallaxBackground.h"
 #include "cocos2d.h"
 
 using namespace cocos2d;
@@ -32,7 +32,7 @@ public:
 private:
 	GLProgram *proPostProcess;
 	InputHandler input;
-	ScrollingBackground background;
+	ParallaxBackground parallaxBackground;
 
 	Character mainChar;
 
@@ -47,7 +47,6 @@ private:
 	
 	//for getting window screen
 	Size playingSize;
-	
 };
 
 
