@@ -42,6 +42,7 @@ private:
 	void ScrollBackgrounds(float _deltaTime);
 	bool CheckCurrentLimit();
 	void SwapIndex();
+	void SwapZOrder();
 	void SwapNextFromQueue();
 	void LoadTextureToBuffer(int index, Texture2D* texture);
 	bool CheckNextEqualCurrent();

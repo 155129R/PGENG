@@ -1,7 +1,7 @@
 #include "ScrollingBackground.h"
 
 #define BUFFER_LENGTH 2
-#define BIAS 5
+#define BIAS 3
 
 ScrollingBackground::ScrollingBackground()
 {
@@ -114,6 +114,14 @@ void ScrollingBackground::SwapIndex()
 	int temp = currIndex;
 	currIndex = nextIndex;
 	nextIndex = temp;
+
+	SwapZOrder();
+}
+
+void ScrollingBackground::SwapZOrder()
+{
+	buffers[currIndex]->setPositionZ(0.1f);
+	buffers[nextIndex]->setPositionZ(0);
 }
 
 void ScrollingBackground::SwapNextFromQueue()
@@ -148,6 +156,7 @@ void ScrollingBackground::ResetNextStartPosition()
 	Size nextSize = buffers[nextIndex]->getContentSize();
 	Size currSize = buffers[currIndex]->getContentSize();
 	float excess = currSize.width - screenWidth;
-	pos.x = screenWidth + nextSize.width * .5f + excess;
+
+	pos.x = screenWidth + nextSize.width * .5f + excess - BIAS;
 	buffers[nextIndex]->setPosition(pos);
 }
