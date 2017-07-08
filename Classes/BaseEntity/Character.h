@@ -5,25 +5,58 @@
 #include "BaseEntity.h"
 #include "cocos2d.h"
 
+class BaseWeapon;
+
 using namespace cocos2d;
+
+namespace CHARACTER_STATE
+{
+	enum Enum
+	{
+		RUNNING,
+		JUMPING,
+		DEATH,
+		MAX,
+	};
+}
+
 
 class Character : public BaseEntity
 {
 private:
 	GLProgram *charEffect;
+	cocos2d::Node* node;
 
 	Vec2 mLoc;
 	Vec2 mLocInc;
-	void MoveChar(int);
+
+	Vec2 velocity;
+	const float mass = 5.f;
+	const float jumpForce = 2000.f;
+
+	float groundHeight;
+	CHARACTER_STATE::Enum charState;
+	BaseWeapon* weapon;
+
+	void(Character::*fncStates[CHARACTER_STATE::MAX])(float);
+	void Running(float _deltaTime);
+	void Jumping(float _deltaTime);
+	void Death(float _deltaTime);
 
 public:
-	void Init(const char*, const char*, float, float);
-	void MoveCharByCoord(float, float);
-	void Stop(void);
-	void Update(float);
+	Character();
+	virtual ~Character();
 
-	void MoveRight();
-	void MoveLeft();
+	void Init(const char* _srcImg, const char* _name, float _x, float _y);
+	void Update(float);
+	void Jump();
+
+	CHARACTER_STATE::Enum getCharacterState();
+	
+	void setWeapon(BaseWeapon* _weapon);
+	BaseWeapon* getWeapon();
+	
+	void ApplyForce(const Vec2& dir, const float& force);
 };
 
 #endif // CHARACTER_H

@@ -61,7 +61,7 @@ void Animator::PlayAnimation(AnimationType animType, BaseEntity* entity)
 				animFrames.pushBack(SpriteFrame::create("PlayerJumping/jumping2.png", Rect(0, 0, 65, 81)));
 				animFrames.pushBack(SpriteFrame::create("PlayerJumping/jumping3.png", Rect(0, 0, 65, 81)));
 
-				Animation* animation = Animation::createWithSpriteFrames(animFrames, 0.35f);
+				Animation* animation = Animation::createWithSpriteFrames(animFrames, 0.1f);
 				Animate* animationJump = Animate::create(animation);
 
 				//  Play animation once using this code without the RepeatForever

@@ -28,6 +28,9 @@
     <Filter Include="Background">
       <UniqueIdentifier>{83850a9a-a4ab-4abe-84ad-4250469649af}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Weapon">
+      <UniqueIdentifier>{daf5d860-298a-4145-841a-0637a15b919c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -61,6 +64,9 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Background\ParallaxBackground.cpp">
       <Filter>Background</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Weapon\Rocket.cpp">
+      <Filter>Weapon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -108,17 +114,20 @@
     <ClInclude Include="..\Classes\Commands\StateCommand.h">
       <Filter>Command</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Commands\CharacterActionCommand.h">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Commands\CharacterStateCommand.h">
-      <Filter>Command</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Background\ScrollingBackground.h">
       <Filter>Background</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Background\ParallaxBackground.h">
       <Filter>Background</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Weapon\BaseWeapon.h">
+      <Filter>Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Commands\TemplateAction.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Weapon\Rocket.h">
+      <Filter>Weapon</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -22,10 +22,7 @@ typedef enum Input_State
 
 typedef enum Input_Game
 {
-	MOVE_RIGHT,
-	MOVE_LEFT,
-	STOP_ACTION,
-	JUMP,
+	USE_WEAPON,
 	GAME_INPUT_MAX,
 };
 

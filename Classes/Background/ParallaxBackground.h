@@ -3,7 +3,7 @@
 
 #include "ScrollingBackground.h"
 
-#define MAX_LAYERS 5
+#define MAX_LAYERS 8
 
 class ParallaxBackground
 {
@@ -13,17 +13,20 @@ public:
 	ParallaxBackground();
 	~ParallaxBackground();
 
-	void Init(float _seconds);
+	void Init(float screenWidth, float screenHeight);
 	void Update(float deltaTime);
 
-	bool AddBackground(int layer, ScrollingBackground* background);
-	void RemoveBackground(int layer);
-	ScrollingBackground& GetBackground(int layer);
+	bool AddBackground(std::string name, std::string path);
+	void SetStartingBackground(std::string name);
+	void QueueBackground(std::string name);
+	void SetScrollSpeed(float _speed);
 	void SetScrollSpeedByTime(float _seconds);
 
 private:
-	float seconds;
+	std::vector<std::string> backgroundNames;
 
+	float seconds;
+	float scrollSpeed;
 	ScrollingBackground* backgrounds[MAX_LAYERS];
 };
 

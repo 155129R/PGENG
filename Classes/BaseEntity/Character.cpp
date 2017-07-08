@@ -1,6 +1,24 @@
 #include "Character.h"
 #include "scene\\HelloWorldScene.h"
 
+#include "Weapon\Rocket.h"
+
+
+Character::Character()
+{
+	fncStates[CHARACTER_STATE::RUNNING] = &Character::Running;
+	fncStates[CHARACTER_STATE::JUMPING] = &Character::Jumping;
+	fncStates[CHARACTER_STATE::DEATH] = &Character::Death;
+}
+
+Character::~Character()
+{
+	if (weapon)
+	{
+		delete weapon;
+		weapon = nullptr;
+	}
+}
 
 void Character::Init(const char* _srcImg, const char* _name, float _x, float _y)
 {
@@ -8,15 +26,13 @@ void Character::Init(const char* _srcImg, const char* _name, float _x, float _y)
 	m_mainSprite->setAnchorPoint(Vec2(0, 0));
 	m_mainSprite->setPosition(_x, _y);
 	m_mainSprite->setName(_name);
-	m_dir = 0;
-	m_speed = 1.f;
+
+	groundHeight = _y;
 
 	mLoc.set(.5f, .5f);
 	mLocInc.set(.005f, .01f);
 
 	entityType = EntityType::CHARACTER;
-
-	animator.animType = Animator::NIL;
 
 	isAlive = true;
 
@@ -28,92 +44,75 @@ void Character::Init(const char* _srcImg, const char* _name, float _x, float _y)
 	charEffect->link();
 	charEffect->updateUniforms();
 
-	Stop();
-}
+	setWeapon(new Rocket(this));
 
-void Character::MoveChar(int _dir)
-{
-	m_dir = _dir;
-
-	if (m_dir == -1)
-	{
-		animator.animType = Animator::PLAYERJUMP;
-		animator.PlayAnimation(animator.animType, (BaseEntity*)this);
-	}
-	else
-	{
-		animator.animType = Animator::PLAYERRUN;
-		animator.PlayAnimation(animator.animType, (BaseEntity*)this);
-	}
-}
-
-void Character::MoveCharByCoord(float _x, float _y)
-{
-	/*m_dir = 0;
-	m_mainSprite->stopAllActions();
-	float diffX = _x - m_mainSprite->getPosition().x;
-	float diffY = _y - m_mainSprite->getPosition().y;
-	Vec2 vec = Vec2(diffX, diffY);
-	auto moveEvent = MoveTo::create(vec.length() / m_speed, Vec2(_x, _y));
-	m_mainSprite->runAction(moveEvent);*/
-	m_mainSprite->stopAllActions();
-	float diffX = _x - m_mainSprite->getPosition().x;
-	float diffY = _y - m_mainSprite->getPosition().y;
-	auto vec = Vec2(diffX, diffY);
-	auto moveEvent = MoveBy::create(vec.length() * m_speed, vec);
-
-	auto callbackStop = CallFunc::create([]()
-	{
-		auto scene = Director::getInstance()->getRunningScene();
-		auto layer = scene->getChildByTag(999);
-		HelloWorld* helloLayer = dynamic_cast<HelloWorld*>(layer);
-		if (helloLayer != NULL)
-			helloLayer->getChar()->Stop();
-	});
-	auto seq = Sequence::create(moveEvent, callbackStop, nullptr);
-	m_mainSprite->runAction(seq);
-
-	Vector<SpriteFrame*> animFrames;
-	animFrames.reserve(4);
-	animFrames.pushBack(SpriteFrame::create("Blue_Back2.png", Rect(0, 0, 65, 81)));
-	animFrames.pushBack(SpriteFrame::create("Blue_Back1.png", Rect(0, 0, 65, 81)));
-	animFrames.pushBack(SpriteFrame::create("Blue_Back3.png", Rect(0, 0, 65, 81)));
-	animFrames.pushBack(SpriteFrame::create("Blue_Back1.png", Rect(0, 0, 65, 81)));
-
-	Animation* animation = Animation::createWithSpriteFrames(animFrames, 0.5f);
-	Animate* animate = Animate::create(animation);
-	m_mainSprite->runAction(animate);
+	charState = CHARACTER_STATE::RUNNING;
+	animator.animType = Animator::PLAYERRUN;
+	animator.PlayAnimation(animator.animType, (BaseEntity*)this);
 }
 
 void Character::Update(float _dt)
 {
-	if (m_dir != 0)
-	{
-		auto moveEvent = MoveBy::create(0.f, Vec2(m_dir, 0.f) * m_speed);
-		m_mainSprite->runAction(moveEvent);
-	}
-	printf("hello");
+	(this->*fncStates[charState])(_dt);
+
 	GLProgramState* state = GLProgramState::getOrCreateWithGLProgram(charEffect);
 	m_mainSprite->setGLProgram(charEffect);
 	m_mainSprite->setGLProgramState(state);
 	state->setUniformVec2("loc", mLoc);
 }
 
-void Character::Stop(void)
+void Character::Running(float _deltaTime)
 {
-	m_dir = 0;
-	m_mainSprite->stopAllActions();
-
-	animator.animType = Animator::PLAYERRUN;
-	animator.PlayAnimation(animator.animType, (BaseEntity*)this);
 }
 
-void Character::MoveRight()
+void Character::Jumping(float _deltaTime)
 {
-	MoveChar(1);
+	velocity.y -= 9.8f;
+	m_mainSprite->setPosition(m_mainSprite->getPosition() + velocity * _deltaTime);
+
+	if (m_mainSprite->getPosition().y < groundHeight)
+	{
+		velocity.setZero();
+		m_mainSprite->setPositionY(groundHeight);
+		animator.animType = Animator::PLAYERRUN;
+		animator.PlayAnimation(animator.animType, (BaseEntity*)this);
+		charState = CHARACTER_STATE::RUNNING;
+	}
 }
 
-void Character::MoveLeft()
+void Character::Death(float _deltaTime)
 {
-	MoveChar(-1);
+
+}
+
+void Character::Jump()
+{
+	if (charState != CHARACTER_STATE::JUMPING)
+	{
+		charState = CHARACTER_STATE::JUMPING;
+		animator.animType = Animator::PLAYERJUMP;
+		animator.PlayAnimation(animator.animType, (BaseEntity*)this);
+		ApplyForce(Vec2(0.f, 1.f), jumpForce);
+	}
+}
+
+CHARACTER_STATE::Enum Character::getCharacterState()
+{
+	return charState;
+}
+
+void Character::setWeapon(BaseWeapon* _weapon)
+{
+	weapon = _weapon;
+	weapon->setWielder(this);
+}
+
+BaseWeapon* Character::getWeapon()
+{
+	return weapon;
+}
+
+void Character::ApplyForce(const Vec2& dir, const float& force)
+{ 
+	velocity += dir * (force / mass);
 }

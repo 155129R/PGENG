@@ -2,8 +2,8 @@
 #include "SimpleAudioEngine.h"
 #include "SceneManager.h"
 
-#include "Commands\CharacterActionCommand.h"
-#include "Commands\CharacterStateCommand.h"
+#include "Commands\TemplateAction.h"
+#include "Weapon\BaseWeapon.h"
 
 ///////////////////////////CTRL F (Update not running)
 USING_NS_CC;
@@ -42,7 +42,6 @@ bool GameScene::init()
 	// Halved of screen height
 	float halvedHeight = playingSize.height * .5f;
 
-	//Temporary Code
 	auto listener = EventListenerKeyboard::create();
 	listener->onKeyPressed = CC_CALLBACK_2(GameScene::onKeyPressed, this);
 	listener->onKeyReleased = CC_CALLBACK_2(GameScene::onKeyReleased, this);
@@ -59,48 +58,18 @@ bool GameScene::init()
 	playerNode->setPosition(0, 0);
 	this->addChild(playerNode, 1);
 
-	mainChar.Init("Blue_Front1.png", "Player", 80, 60);
+	mainChar.Init("Blue_Front1.png", "Player", 80, 150);
 	playerNode->addChild(mainChar.getSprite(), 1);
 
 	// Input control setup
-	input.BindCommandAndKey(Input_Game::MOVE_RIGHT, new CharacterActionCommand(&Character::MoveRight, &mainChar, Input_Action::PRESSED), (int)EventKeyboard::KeyCode::KEY_D);
-	input.BindCommandAndKey(Input_Game::MOVE_LEFT, new CharacterActionCommand(&Character::MoveLeft, &mainChar, Input_Action::PRESSED), (int)EventKeyboard::KeyCode::KEY_A);
-	input.BindCommandAndKey(Input_Game::STOP_ACTION, new CharacterActionCommand(&Character::Stop, &mainChar, Input_Action::RELEASED), (int)EventKeyboard::KeyCode::KEY_D);
-	input.BindCommandAndKey(Input_Game::STOP_ACTION, new CharacterActionCommand(&Character::Stop, &mainChar, Input_Action::RELEASED), (int)EventKeyboard::KeyCode::KEY_A);
+	input.BindCommandAndKey(Input_Game::USE_WEAPON, new TemplateAction<BaseWeapon>(mainChar.getWeapon(), &BaseWeapon::use, Input_Action::PRESSED), (int)EventKeyboard::KeyCode::KEY_SPACE);
 
 	// Load background
-	parallaxBackground.Init(1200.f);
+	parallaxBackground.Init(visibleSize.width, visibleSize.height);
 	this->addChild(parallaxBackground.node);
-
-	ScrollingBackground* background = new ScrollingBackground();
-	background->Init(visibleSize.width, visibleSize.height, 3.f);
-	background->AddImage("hills_0", "Background/hills_0.png");
-	background->SetStartingBackground("hills_0");
-	parallaxBackground.AddBackground(0, background);
-
-	background = new ScrollingBackground();
-	background->Init(visibleSize.width, visibleSize.height, 3.f);
-	background->AddImage("hills_1", "Background/hills_1.png");
-	background->SetStartingBackground("hills_1");
-	parallaxBackground.AddBackground(1, background);
-
-	background = new ScrollingBackground();
-	background->Init(visibleSize.width, visibleSize.height, 3.f);
-	background->AddImage("hills_2", "Background/hills_2.png");
-	background->SetStartingBackground("hills_2");
-	parallaxBackground.AddBackground(2, background);
-
-	background = new ScrollingBackground();
-	background->Init(visibleSize.width, visibleSize.height, 3.f);
-	background->AddImage("hills_3", "Background/hills_3.png");
-	background->SetStartingBackground("hills_3");
-	parallaxBackground.AddBackground(3, background);
-
-	background = new ScrollingBackground();
-	background->Init(visibleSize.width, visibleSize.height, 3.f);
-	background->AddImage("hills_4", "Background/hills_4.png");
-	background->SetStartingBackground("hills_4");
-	parallaxBackground.AddBackground(4, background);
+	parallaxBackground.AddBackground("hills", "Background/");
+	parallaxBackground.SetStartingBackground("hills");
+	parallaxBackground.SetScrollSpeedByTime(30.f);
 
 	for (int i = 1; i < 9; i++)
 	{
@@ -128,11 +97,16 @@ bool GameScene::init()
 void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
 	input.EnqueueKeyPressed((int)keyCode);
-	//if (keyCode == EventKeyboard::KeyCode::KEY_SPACE)
-	//{
-	//	//CCDirector::getInstance()->replaceScene(TransitionFade::create(1.5, HelloWorld::createScene(), Color3B(0, 255, 255)));
-	//	SceneManager::getInstance()->runSceneWithType(CONSTANTS::SceneType::GAMEPLAY);
-	//}
+	if (keyCode == EventKeyboard::KeyCode::KEY_SPACE)
+	{
+		//CCDirector::getInstance()->replaceScene(TransitionFade::create(1.5, HelloWorld::createScene(), Color3B(0, 255, 255)));
+		//SceneManager::getInstance()->runSceneWithType(CONSTANTS::SceneType::GAMEPLAY);
+	}
+
+	if (keyCode == EventKeyboard::KeyCode::KEY_LEFT_CTRL)
+	{
+		parallaxBackground.QueueBackground("hills");
+	}
 }
 
 void GameScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
@@ -155,8 +129,12 @@ void GameScene::SpawnEnemy(int numberOfEnemy)
 }
 void GameScene::update(float _delta)
 {
+	input.RunCommands();
+
 	spawnTimer -= _delta;
+	mainChar.Update(_delta);
 	parallaxBackground.Update(_delta);
+	
 	if (spawnTimer <= 0.0f && !allEnemyALive)
 	{
 		//For Debug
@@ -171,7 +149,6 @@ void GameScene::update(float _delta)
 	for (auto enemy : enemyList)
 		enemy->Update(_delta, mainChar);
 
-	input.RunCommands();
 }
 
 void GameScene::menuCloseCallback(Ref* pSender)

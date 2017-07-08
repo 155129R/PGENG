@@ -9,10 +9,10 @@ protected:
 	Input_Action actionState;
 
 public:
-	ActionCommand(Input_Action _actionState = Input_Action::PRESSED)
+	ActionCommand(Input_Action _action = Input_Action::PRESSED)
 	{
 		inputType = Input_Type::ACTION;
-		actionState = _actionState;
+		actionState = _action;
 	}
 	~ActionCommand(){}
 
@@ -20,7 +20,10 @@ public:
 	{
 		return actionState;
 	}
-	virtual void Execute(){}
+
+	virtual void Execute()
+	{
+	}
 };
 
 #endif // !__ACTION_COMMAND_H__

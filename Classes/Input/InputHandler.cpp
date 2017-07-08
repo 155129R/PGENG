@@ -6,7 +6,6 @@ InputHandler::InputHandler()
 	
 }
 
-
 InputHandler::~InputHandler()
 {
 	for (int i = 0; i < Input_Game::GAME_INPUT_MAX; ++i)

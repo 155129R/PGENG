@@ -1,71 +1,89 @@
 #include "ParallaxBackground.h"
 #include "cocos2d.h"
+#include "math\CCMath.h"
 
 using namespace cocos2d;
 
 ParallaxBackground::ParallaxBackground()
 {
+	for (int i = 0; i < MAX_LAYERS; ++i)
+	{
+		backgrounds[i] = new ScrollingBackground();
+	}
 }
-
 
 ParallaxBackground::~ParallaxBackground()
 {
+	for (int i = 0; i < MAX_LAYERS; ++i)
+	{
+		delete backgrounds[i];
+		backgrounds[i] = nullptr;
+	}
 }
 
-void ParallaxBackground::Init(float _seconds)
+void ParallaxBackground::Init(float screenWidth, float screenHeight)
 {
 	node = Node::create();
 	node->setName("ParallaxBackground");
 
 	for (int i = 0; i < MAX_LAYERS; ++i)
 	{
-		backgrounds[i] = nullptr;
+		backgrounds[i]->Init(screenWidth, screenHeight);
+		node->addChild(backgrounds[i]->node[0]);
+		node->addChild(backgrounds[i]->node[1]);
 	}
-
-	seconds = _seconds;
 }
 
 void ParallaxBackground::Update(float deltaTime)
 {
 	for (int i = 0; i < MAX_LAYERS; ++i)
 	{
-		if (backgrounds[i])
-			backgrounds[i]->Update(deltaTime);
+		backgrounds[i]->Update(deltaTime);
 	}
 }
 
-bool ParallaxBackground::AddBackground(int layer, ScrollingBackground* background)
+bool ParallaxBackground::AddBackground(std::string name, std::string path)
 {
-	if (layer < 0 || layer >= MAX_LAYERS)
-		return false;
-
-	if (backgrounds[layer])
+	bool exist = false;
+	for (int i = 0; i < MAX_LAYERS; ++i)
 	{
-		RemoveBackground(layer);
+		if (backgrounds[i]->AddImage(name, path + name + "_" + std::to_string(i) + ".png"))
+			exist = true;
 	}
 
-	node->addChild(background->node[0], layer);
-	node->addChild(background->node[1], layer);
-
-	background->node[0]->setName("ScrollingBackground1_" + std::to_string(layer));
-	background->node[0]->setName("ScrollingBackground2_" + std::to_string(layer));
-
-	backgrounds[layer] = background;
-	SetScrollSpeedByTime(seconds);
-	return true;
+	if (exist)
+	{
+		backgroundNames.push_back(name);
+	}
+	
+	return exist;
 }
 
-void ParallaxBackground::RemoveBackground(int layer)
+void ParallaxBackground::SetStartingBackground(std::string name)
 {
-	node->removeChild(backgrounds[layer]->node[0]);
-	node->removeChild(backgrounds[layer]->node[1]);
-	delete backgrounds[layer];
-	backgrounds[layer] = nullptr;
+	for (int i = 0; i < MAX_LAYERS; ++i)
+	{
+		backgrounds[i]->SetStartingBackground(name);
+	}
 }
 
-ScrollingBackground& ParallaxBackground::GetBackground(int layer)
+void ParallaxBackground::QueueBackground(std::string name)
 {
-	return *backgrounds[layer];
+	for (int i = 0; i < MAX_LAYERS; ++i)
+	{
+		if (!backgrounds[i]->QueueNextBackground(name))
+			backgrounds[i]->StopBackground();
+	}
+}
+
+void ParallaxBackground::SetScrollSpeed(float _speed)
+{
+	//scrollSpeed = std::pow(_speed, 1.f / (float)MAX_LAYERS);
+	for (int i = 0; i < MAX_LAYERS; ++i)
+	{
+		//backgrounds[i]->SetScrollSpeed(std::pow(scrollSpeed, i));
+		backgrounds[i]->SetScrollSpeed(_speed / (8 - i));
+	}
 }
 
 void ParallaxBackground::SetScrollSpeedByTime(float _seconds)

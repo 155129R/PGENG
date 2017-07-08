@@ -128,7 +128,6 @@ void HelloWorld::onMouseDown(Event* event)
 	EventMouse* mouse = (EventMouse*)event;
 	float x = mouse->getCursorX();
 	float y = mouse->getCursorY();
-	mainChar.MoveCharByCoord(x, y);
 }
 
 void HelloWorld::update(float _delta)
