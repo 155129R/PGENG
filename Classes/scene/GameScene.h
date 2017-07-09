@@ -5,6 +5,7 @@
 #include "BaseEntity\Enemy.h"
 #include "Input\InputHandler.h"
 #include "Background\ParallaxBackground.h"
+#include "Weapon\Weapon.h"
 #include "cocos2d.h"
 
 using namespace cocos2d;
@@ -37,6 +38,10 @@ private:
 	Character mainChar;
 
 	std::vector<Enemy*> enemyList;
+	std::vector<Projectile*> projectileList;
+
+	// Weapon should be in character Class
+	Weapon* weapon;
 	float spawnTimer;
 
 	//to check if all enemy are on screen

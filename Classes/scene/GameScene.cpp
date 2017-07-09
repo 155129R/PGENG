@@ -86,6 +86,22 @@ bool GameScene::init()
 		enemyList.push_back(newEnemy);
 	}
 
+	//Projectile Pool SHOULD BE IN CHARACTER CLASS
+	for (int a = 1; a < 4; a++)
+	{
+		auto projectileNode = Node::create();
+		projectileNode->setName("Missile");
+		this->addChild(projectileNode, 1);
+
+		Projectile* newMissile = new Projectile("Blue_Front1.png", 2.0f, Vec2(1.0f, 0.0f), 1.0f);
+		projectileNode->addChild(newMissile->getSprite(), 1);
+		newMissile->SetAlive(false);
+		projectileList.push_back(newMissile);
+	}
+
+	//300 bullet capacity, 30 magazine size, true is for reloadable, reloadable is for some guns that doesn't require reloading
+	weapon = new Weapon(300, 30, true);
+
 	spawnTimer = (float)(cocos2d::RandomHelper::random_int(5, 5));
 	tempRandom = 0;
 	allEnemyALive = false;
@@ -97,10 +113,15 @@ bool GameScene::init()
 void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
 	input.EnqueueKeyPressed((int)keyCode);
-	if (keyCode == EventKeyboard::KeyCode::KEY_SPACE)
+	//if (keyCode == EventKeyboard::KeyCode::KEY_SPACE)
+	//{
+	//	//CCDirector::getInstance()->replaceScene(TransitionFade::create(1.5, HelloWorld::createScene(), Color3B(0, 255, 255)));
+	//	//SceneManager::getInstance()->runSceneWithType(CONSTANTS::SceneType::GAMEPLAY);
+	//}
+
+	if (keyCode == EventKeyboard::KeyCode::KEY_G)
 	{
-		//CCDirector::getInstance()->replaceScene(TransitionFade::create(1.5, HelloWorld::createScene(), Color3B(0, 255, 255)));
-		//SceneManager::getInstance()->runSceneWithType(CONSTANTS::SceneType::GAMEPLAY);
+		weapon->Fire(projectileList, mainChar);
 	}
 
 	if (keyCode == EventKeyboard::KeyCode::KEY_LEFT_CTRL)
@@ -146,6 +167,12 @@ void GameScene::update(float _delta)
 		tempRandom = cocos2d::RandomHelper::random_int(1, 7);
 		SpawnEnemy(tempRandom);
 	}
+
+	//Update for weapon and projectile
+	weapon->Update(_delta);
+	for (auto projectile : projectileList)
+		projectile->Update(_delta);
+
 	for (auto enemy : enemyList)
 		enemy->Update(_delta, mainChar);
 

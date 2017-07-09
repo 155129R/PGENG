@@ -152,10 +152,13 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\BaseEntity\Character.cpp" />
     <ClCompile Include="..\Classes\BaseEntity\Enemy.cpp" />
     <ClCompile Include="..\Classes\Input\InputHandler.cpp" />
+    <ClCompile Include="..\Classes\Projectile\Missile.cpp" />
+    <ClCompile Include="..\Classes\Projectile\Projectile.cpp" />
     <ClCompile Include="..\Classes\scene\GameScene.cpp" />
     <ClCompile Include="..\Classes\scene\HelloWorldScene.cpp" />
     <ClCompile Include="..\Classes\scene\SceneManager.cpp" />
     <ClCompile Include="..\Classes\Weapon\Rocket.cpp" />
+    <ClCompile Include="..\Classes\Weapon\Weapon.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -174,11 +177,14 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Constants\Constants.h" />
     <ClInclude Include="..\Classes\Constants\InputConstant.h" />
     <ClInclude Include="..\Classes\Input\InputHandler.h" />
+    <ClInclude Include="..\Classes\Projectile\Missile.h" />
+    <ClInclude Include="..\Classes\Projectile\Projectile.h" />
     <ClInclude Include="..\Classes\scene\GameScene.h" />
     <ClInclude Include="..\Classes\scene\HelloWorldScene.h" />
     <ClInclude Include="..\Classes\scene\SceneManager.h" />
     <ClInclude Include="..\Classes\Weapon\BaseWeapon.h" />
     <ClInclude Include="..\Classes\Weapon\Rocket.h" />
+    <ClInclude Include="..\Classes\Weapon\Weapon.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>

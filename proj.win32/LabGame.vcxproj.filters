@@ -31,6 +31,9 @@
     <Filter Include="Weapon">
       <UniqueIdentifier>{daf5d860-298a-4145-841a-0637a15b919c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Projectile">
+      <UniqueIdentifier>{8deac0ff-bd84-4619-8ef8-5ca4dd8c8251}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -67,6 +70,15 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Weapon\Rocket.cpp">
       <Filter>Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Weapon\Weapon.cpp">
+      <Filter>Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Projectile\Missile.cpp">
+      <Filter>Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Projectile\Projectile.cpp">
+      <Filter>Projectile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -128,6 +140,15 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Weapon\Rocket.h">
       <Filter>Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Weapon\Weapon.h">
+      <Filter>Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Projectile\Missile.h">
+      <Filter>Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Projectile\Projectile.h">
+      <Filter>Projectile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
