@@ -34,6 +34,9 @@
     <Filter Include="Projectile">
       <UniqueIdentifier>{8deac0ff-bd84-4619-8ef8-5ca4dd8c8251}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{36e08753-b08b-4f60-9617-593ea972531f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -71,14 +74,14 @@
     <ClCompile Include="..\Classes\Weapon\Rocket.cpp">
       <Filter>Weapon</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Weapon\Weapon.cpp">
-      <Filter>Weapon</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Projectile\Missile.cpp">
       <Filter>Projectile</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Projectile\Projectile.cpp">
       <Filter>Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Manager\EnemyManager.cpp">
+      <Filter>Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -141,14 +144,14 @@
     <ClInclude Include="..\Classes\Weapon\Rocket.h">
       <Filter>Weapon</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Weapon\Weapon.h">
-      <Filter>Weapon</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Projectile\Missile.h">
       <Filter>Projectile</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Projectile\Projectile.h">
       <Filter>Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Manager\EnemyManager.h">
+      <Filter>Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

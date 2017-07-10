@@ -9,16 +9,13 @@ class BaseWeapon;
 
 using namespace cocos2d;
 
-namespace CHARACTER_STATE
+typedef enum CHARACTER_STATE
 {
-	enum Enum
-	{
-		RUNNING,
-		JUMPING,
-		DEATH,
-		MAX,
-	};
-}
+	RUNNING,
+	JUMPING,
+	DEATH,
+	MAX,
+};
 
 
 class Character : public BaseEntity
@@ -35,7 +32,7 @@ private:
 	const float jumpForce = 2000.f;
 
 	float groundHeight;
-	CHARACTER_STATE::Enum charState;
+	CHARACTER_STATE charState;
 	BaseWeapon* weapon;
 
 	void(Character::*fncStates[CHARACTER_STATE::MAX])(float);
@@ -51,7 +48,7 @@ public:
 	void Update(float);
 	void Jump();
 
-	CHARACTER_STATE::Enum getCharacterState();
+	CHARACTER_STATE getCharacterState();
 	
 	void setWeapon(BaseWeapon* _weapon);
 	BaseWeapon* getWeapon();

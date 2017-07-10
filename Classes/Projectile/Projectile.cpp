@@ -1,10 +1,15 @@
 #include"Projectile\Projectile.h"
+
+#include "../scene/SceneManager.h"
+#include "../scene/GameScene.h"
+
 Projectile::Projectile(const char* _srcImg, float lifetime, Vec2 direction, int damage)
 {
 	m_mainSprite = Sprite::create(_srcImg);
 	m_Lifetime = lifetime;
 	m_ProjectileDirection = direction;
 	m_Damage = damage;
+	m_speed = 1.f;
 	//isAlive = false;
 	m_mainSprite->setVisible(false);
 }
@@ -18,25 +23,34 @@ Projectile::Projectile()
 	m_mainSprite->setVisible(false);
 }
 
+Projectile::~Projectile()
+{
+
+}
+
 // Update the status of this projectile
 void Projectile::Update(double dt)
 {
 	if (isAlive)
 	{
-		auto moveEvent = MoveBy::create(10.0f, m_ProjectileDirection * m_speed);
+		auto moveEvent = MoveBy::create(0.0f, m_ProjectileDirection * m_speed * dt);
 		m_mainSprite->runAction(moveEvent);
 		m_mainSprite->setVisible(true);
-		/*
-		if (moveEvent->getDuration() > 0.0f)
+
+		if (m_mainSprite->getPosition().y <= 150.f)
 		{
-			m_mainSprite->runAction(moveEvent);
-			m_mainSprite->setVisible(true); 
-		}
-		else
-		{
+			SetAlive(false);
 			m_mainSprite->setVisible(false);
-			isAlive = false;
-		}*/
+
+			Scene* scene = (CCDirector::getInstance()->getRunningScene());
+			Node* node = scene->getChildByTag((int)SceneType::GAMEPLAY);
+			GameScene* game = dynamic_cast<GameScene*>(node);
+
+			if (game)
+			{
+				game->mainChar.ApplyForce(Vec2(0.f, 1.f), 2000.f);
+			}
+		}
 	}
 }
 

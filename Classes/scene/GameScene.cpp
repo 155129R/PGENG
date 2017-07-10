@@ -3,6 +3,7 @@
 #include "SceneManager.h"
 
 #include "Commands\TemplateAction.h"
+#include "Projectile\Projectile.h"
 #include "Weapon\BaseWeapon.h"
 
 ///////////////////////////CTRL F (Update not running)
@@ -15,6 +16,7 @@ Scene* GameScene::createScene()
 
 	// 'layer' is an autorelease object
 	auto layer = GameScene::create();
+	layer->setTag((int)SceneType::GAMEPLAY);
 
 	// add layer as a child to scene
 	scene->addChild(layer);
@@ -71,21 +73,6 @@ bool GameScene::init()
 	parallaxBackground.SetStartingBackground("hills");
 	parallaxBackground.SetScrollSpeedByTime(30.f);
 
-	for (int i = 1; i < 9; i++)
-	{
-		auto enemyNode = Node::create();
-		enemyNode->setName("enemyNode");
-		enemyNode->setPosition(10, 0);
-		this->addChild(enemyNode, 1);
-
-		Enemy* newEnemy = new Enemy();
-		newEnemy->Init("Blue_Front1.png", "Player", 300, i * 100, mainChar.getPosition().x);
-		enemyNode->addChild(newEnemy->getSprite(), 1);
-		newEnemy->SetAlive(false);
-		
-		enemyList.push_back(newEnemy);
-	}
-
 	//Projectile Pool SHOULD BE IN CHARACTER CLASS
 	for (int a = 1; a < 4; a++)
 	{
@@ -99,9 +86,8 @@ bool GameScene::init()
 		projectileList.push_back(newMissile);
 	}
 
-	//300 bullet capacity, 30 magazine size, true is for reloadable, reloadable is for some guns that doesn't require reloading
-	weapon = new Weapon(300, 30, true);
-
+	enemyManager = new EnemyManager(this);
+	
 	spawnTimer = (float)(cocos2d::RandomHelper::random_int(5, 5));
 	tempRandom = 0;
 	allEnemyALive = false;
@@ -118,16 +104,6 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 	//	//CCDirector::getInstance()->replaceScene(TransitionFade::create(1.5, HelloWorld::createScene(), Color3B(0, 255, 255)));
 	//	//SceneManager::getInstance()->runSceneWithType(CONSTANTS::SceneType::GAMEPLAY);
 	//}
-
-	if (keyCode == EventKeyboard::KeyCode::KEY_G)
-	{
-		weapon->Fire(projectileList, mainChar);
-	}
-
-	if (keyCode == EventKeyboard::KeyCode::KEY_LEFT_CTRL)
-	{
-		parallaxBackground.QueueBackground("hills");
-	}
 }
 
 void GameScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
@@ -156,20 +132,12 @@ void GameScene::update(float _delta)
 	mainChar.Update(_delta);
 	parallaxBackground.Update(_delta);
 	
-	if (spawnTimer <= 0.0f && !allEnemyALive)
-	{
-		//For Debug
-		//spawnTimer = 0.2f;
+	enemyManager->Update(_delta, mainChar);
 
-		//For Playtest
-		spawnTimer = (float)(cocos2d::RandomHelper::random_int(1, 5));
-
-		tempRandom = cocos2d::RandomHelper::random_int(1, 7);
-		SpawnEnemy(tempRandom);
-	}
+	for (auto enemy : enemyList)
+		enemy->Update(_delta, mainChar);
 
 	//Update for weapon and projectile
-	weapon->Update(_delta);
 	for (auto projectile : projectileList)
 		projectile->Update(_delta);
 

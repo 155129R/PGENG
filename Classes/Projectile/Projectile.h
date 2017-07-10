@@ -1,4 +1,5 @@
 #include "BaseEntity\BaseEntity.h"
+
 class Projectile : public BaseEntity
 {
 protected:
@@ -15,6 +16,7 @@ protected:
 public:
 	Projectile(const char* _srcImg, float, Vec2, int);
 	Projectile();
+	virtual ~Projectile();
 
 	//Get the status of the projectile
 	void SetStatus(const bool status);

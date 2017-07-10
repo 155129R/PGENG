@@ -63,6 +63,10 @@ void Character::Update(float _dt)
 
 void Character::Running(float _deltaTime)
 {
+	if (velocity.y != 0)
+	{
+		charState = CHARACTER_STATE::JUMPING;
+	}
 }
 
 void Character::Jumping(float _deltaTime)
@@ -96,7 +100,7 @@ void Character::Jump()
 	}
 }
 
-CHARACTER_STATE::Enum Character::getCharacterState()
+CHARACTER_STATE Character::getCharacterState()
 {
 	return charState;
 }
@@ -114,5 +118,7 @@ BaseWeapon* Character::getWeapon()
 
 void Character::ApplyForce(const Vec2& dir, const float& force)
 { 
+	cocos2d::log(("Before: " + std::to_string(velocity.y)).c_str());
 	velocity += dir * (force / mass);
+	cocos2d::log(("After: " + std::to_string(velocity.y)).c_str());
 }

@@ -5,10 +5,12 @@
 #include "BaseEntity\Enemy.h"
 #include "Input\InputHandler.h"
 #include "Background\ParallaxBackground.h"
-#include "Weapon\Weapon.h"
+#include "Manager\EnemyManager.h"
 #include "cocos2d.h"
 
 using namespace cocos2d;
+
+class Projectile;
 
 class GameScene : public cocos2d::Layer
 {
@@ -30,18 +32,19 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(GameScene);
 
+	std::vector<Projectile*> projectileList;
+	Character mainChar;
+
 private:
 	GLProgram *proPostProcess;
 	InputHandler input;
 	ParallaxBackground parallaxBackground;
 
-	Character mainChar;
+	EnemyManager* enemyManager;
 
 	std::vector<Enemy*> enemyList;
-	std::vector<Projectile*> projectileList;
 
 	// Weapon should be in character Class
-	Weapon* weapon;
 	float spawnTimer;
 
 	//to check if all enemy are on screen

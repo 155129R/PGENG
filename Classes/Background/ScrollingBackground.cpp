@@ -8,7 +8,6 @@ ScrollingBackground::ScrollingBackground()
 	stateFunc[RUN] = &ScrollingBackground::Run;
 	stateFunc[PRE_STOP] = &ScrollingBackground::PreStop;
 	stateFunc[STOP] = &ScrollingBackground::Stop;
-	time = 0.f;
 }
 
 ScrollingBackground::~ScrollingBackground()
@@ -201,11 +200,8 @@ void ScrollingBackground::ResetNextStartPosition()
 void ScrollingBackground::Run(float _deltaTime)
 {
 	ScrollBackgrounds(_deltaTime);
-	time += _deltaTime;
 	if (CheckScrollLimit())
 	{
-		cocos2d::log(std::to_string(time).c_str());
-		time = 0.f;
 		SwapIndex();
 		if (!imageQueue.empty())
 			SwapNextFromQueue();

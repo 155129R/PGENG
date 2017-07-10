@@ -42,8 +42,6 @@ private:
 	std::queue<std::map<std::string, Texture2D*>::iterator> imageQueue;
 	Sprite* buffers[2];
 
-	float time;
-
 	void(ScrollingBackground::*stateFunc[MAX])(float);
 
 	std::string currentActiveName;

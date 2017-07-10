@@ -7,6 +7,7 @@ class Character;
 class Rocket : public BaseWeapon
 {
 	Character* character;
+	bool fired;
 
 public:
 	Rocket(BaseEntity* _character = nullptr);
