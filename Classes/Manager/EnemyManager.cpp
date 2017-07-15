@@ -1,5 +1,9 @@
 #include "EnemyManager.h"
 
+#include <sstream>
+#include <fstream>
+
+
 EnemyManager::EnemyManager(Node* scene)
 {
 	spawnTimer = 5.0f;
@@ -11,21 +15,37 @@ EnemyManager::EnemyManager(Node* scene)
 	groundOffset = 0;
 	enemyOffset = 25.0f;
 
-	int enemyPattern1[9][5] = { 
-		{ 1, 0, 0, 1, 1 },
-		{ 1, 0, 0, 1, 1 },
-		{ 1, 0, 0, 1, 0 },
-		{ 1, 0, 0, 1, 0 },
-		{ 0, 1, 0, 1, 0 },
-		{ 0, 1, 1, 0, 1 },
-		{ 0, 1, 1, 0, 1 },
-		{ 1, 0, 1, 0, 1 },
-		{ 1, 0, 1, 0, 1 } 
-	};
+	//Start of reading file
+	std::ifstream file;
+	//For CSV File
+	file.open("Levels\\Level1.csv");
 
-	std::copy(&enemyPattern1[0][0], &enemyPattern1[0][0] + 9 * 5, &currentPattern[0][0]);
+	//For Text File
+	//file.open("Levels\\Level1.txt");
+	while (file)
+	{
+		vector<int> enemyPatternY;
+		
+		//For CSV File
+		std::getline(file, line,'\r');
+		
+		//For Text File
+		//std::getline(file, line);
+		
+		//Loop through the line
+		for (int i = 0; i < line.size(); i++)
+		{
+			if (line.at(i) == '1' || line.at(i) == '0')
+			{
+				enemyPatternY.push_back(line.at(i) - '0');
+			}
+		}
 
-	for (int i = 0; i < 45; i++)
+		//push in the Y pattern into X pattern
+		enemyPattern.push_back(enemyPatternY);
+	}
+
+	for (int i = 0; i < 35; i++)
 	{
 		auto enemyNode = Node::create();
 		enemyNode->setName("enemyNode");
@@ -50,6 +70,12 @@ EnemyManager::~EnemyManager()
 
 }
 
+
+const char* EnemyManager::getPathForFile(string fileName)
+{
+	string path = CCFileUtils::sharedFileUtils()->getWritablePath() + "\\" + fileName;
+	return path.c_str();
+}
 void EnemyManager::SpawnEnemy(float x, float y)
 {
 
@@ -80,11 +106,20 @@ void EnemyManager::Update(double dt, BaseEntity character)
 {
 	if (!waveSpawned)
 	{
-		for (int x = waveNumber; x < 5; x++)
+		//Why i use enemyPattern.at(0).size() as the limit becuase
+		//Right now i have to access the pattern then i can get the max wave size
+		//Since the max wave size is determined by the number of X there is in csv
+		//It is not the best method yet, best method would be pre set 2 array
+		//by looping through the csv see what is the x and y capacity
+		//then set it to 2d Array using memset, after that change the
+		//enemyPattern.at(0).size() to the X capacity.
+
+		//For CSV File
+		for (int x = waveNumber; x < enemyPattern.at(0).size(); x++)
 		{
-			for (int y = 0; y < 9; y++)
+			for (int y = 0; y < enemyPattern.size() - 1; y++)
 			{
-				if (currentPattern[y][x] == 1)
+				if (enemyPattern[y][x] == 1)
 				{
 					SpawnEnemy(x, y);
 				}
@@ -95,13 +130,36 @@ void EnemyManager::Update(double dt, BaseEntity character)
 			break;
 		}
 
+		//For Text File
+		/*
+		for (int x = waveNumber; x < enemyPattern.size(); x++)
+		{
+			for (int y = 0; y < enemyPattern.size(); y++)
+			{
+				if (enemyPattern[y][x] == 1)
+				{
+					SpawnEnemy(x, y);
+				}
+
+			}
+			waveSpawned = true;
+			waveNumber++;
+			break;
+		}*/
+		
+
 	}
 	else
 	{
 		currentSpawnTimer -= dt;
-		if (currentSpawnTimer <= 0.0f && waveNumber < 5)
+		if (currentSpawnTimer <= 0.0f)
 		{
+			//Normal GamePlay
 			currentSpawnTimer = spawnTimer;
+			
+			//For Debugging
+			//currentSpawnTimer = 0.2f;
+			
 			waveSpawned = false;
 		}
 	}
