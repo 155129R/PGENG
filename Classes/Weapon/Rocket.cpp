@@ -23,6 +23,7 @@ void Rocket::setWielder(BaseEntity* _wielder)
 
 void Rocket::use()
 {
+	
 	if (character->getCharacterState() == CHARACTER_STATE::RUNNING)
 	{
 		fired = false;
@@ -33,7 +34,7 @@ void Rocket::use()
 		Scene* scene = (CCDirector::getInstance()->getRunningScene());
 		Node* node = scene->getChildByTag((int)SceneType::GAMEPLAY);
 		GameScene* game = dynamic_cast<GameScene*>(node);
-		 
+
 		if (game)
 		{
 			for (auto projectile : game->projectileList)
@@ -41,11 +42,11 @@ void Rocket::use()
 				if (!projectile->GetAlive())
 				{
 					fired = true;
-
 					Vec2 direction = Vec2(0.0f, -1.0f);
 					projectile->SetPosition(character->getPosition());
-					projectile->SetSpeed(300.f);
+					projectile->SetSpeed(1500.f);
 					projectile->SetLifetime(1.f);
+					projectile->SetBlastRadius(500.f);
 					projectile->SetDamage(0.f);
 					projectile->SetDirection(direction);
 					projectile->SetAlive(true);
@@ -54,4 +55,5 @@ void Rocket::use()
 			}
 		}
 	}
+
 }

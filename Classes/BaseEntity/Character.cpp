@@ -27,22 +27,23 @@ void Character::Init(const char* _srcImg, const char* _name, float _x, float _y)
 	m_mainSprite->setPosition(_x, _y);
 	m_mainSprite->setName(_name);
 
-	groundHeight = _y;
+	physics = PhysicsBody::createBox(m_mainSprite->getContentSize(), PhysicsMaterial(0.f, 0.f, 0.f));
+	physics->addMass(mass);
+	physics->setRotationEnable(false);
+	m_mainSprite->addComponent(physics);
 
-	mLoc.set(.5f, .5f);
-	mLocInc.set(.005f, .01f);
+	groundHeight = _y;
+	visible = true;
+	score = 0;
+
+	health = hits;
+
+	invulTimer = invulDuration;
+	invulFlag = false;
 
 	entityType = EntityType::CHARACTER;
 
 	isAlive = true;
-
-	charEffect = new GLProgram();
-	charEffect->initWithFilenames("Basic.vsh", "CharEffect.fsh");
-	charEffect->bindAttribLocation(GLProgram::ATTRIBUTE_NAME_POSITION, GLProgram::VERTEX_ATTRIB_POSITION);
-	charEffect->bindAttribLocation(GLProgram::ATTRIBUTE_NAME_COLOR, GLProgram::VERTEX_ATTRIB_COLOR);
-	charEffect->bindAttribLocation(GLProgram::ATTRIBUTE_NAME_TEX_COORD, GLProgram::VERTEX_ATTRIB_TEX_COORD);
-	charEffect->link();
-	charEffect->updateUniforms();
 
 	setWeapon(new Rocket(this));
 
@@ -54,16 +55,13 @@ void Character::Init(const char* _srcImg, const char* _name, float _x, float _y)
 void Character::Update(float _dt)
 {
 	(this->*fncStates[charState])(_dt);
-
-	GLProgramState* state = GLProgramState::getOrCreateWithGLProgram(charEffect);
-	m_mainSprite->setGLProgram(charEffect);
-	m_mainSprite->setGLProgramState(state);
-	state->setUniformVec2("loc", mLoc);
+	Invulerable(_dt);
 }
 
 void Character::Running(float _deltaTime)
 {
-	if (velocity.y != 0)
+	physics->setGravityEnable(false);
+	if (physics->getVelocity().y != 0.f)
 	{
 		charState = CHARACTER_STATE::JUMPING;
 	}
@@ -71,12 +69,11 @@ void Character::Running(float _deltaTime)
 
 void Character::Jumping(float _deltaTime)
 {
-	velocity.y -= 9.8f;
-	m_mainSprite->setPosition(m_mainSprite->getPosition() + velocity * _deltaTime);
-
+	physics->setGravityEnable(true);
 	if (m_mainSprite->getPosition().y < groundHeight)
 	{
-		velocity.setZero();
+		physics->setGravityEnable(false);
+		physics->setVelocity(Vec2::ZERO);
 		m_mainSprite->setPositionY(groundHeight);
 		animator.animType = Animator::PLAYERRUN;
 		animator.PlayAnimation(animator.animType, (BaseEntity*)this);
@@ -87,6 +84,24 @@ void Character::Jumping(float _deltaTime)
 void Character::Death(float _deltaTime)
 {
 
+}
+
+void Character::Invulerable(float dt)
+{
+	if (invulFlag)
+	{
+		invulTimer -= dt;
+		visible = !visible;
+		m_mainSprite->setVisible(visible);
+
+		if (invulTimer < 0)
+		{
+			visible = true;
+			m_mainSprite->setVisible(visible);
+			invulTimer = invulDuration;
+			invulFlag = false;
+		}
+	}
 }
 
 void Character::Jump()
@@ -118,7 +133,19 @@ BaseWeapon* Character::getWeapon()
 
 void Character::ApplyForce(const Vec2& dir, const float& force)
 { 
-	cocos2d::log(("Before: " + std::to_string(velocity.y)).c_str());
-	velocity += dir * (force / mass);
-	cocos2d::log(("After: " + std::to_string(velocity.y)).c_str());
+	physics->setVelocity(physics->getVelocity() + dir * force);
+}
+
+void Character::TakeDamage()
+{
+	if (!invulFlag)
+	{
+		health -= 1;
+		invulFlag = true;
+	}
+}
+
+bool Character::isDead()
+{
+	return health <= 0;
 }

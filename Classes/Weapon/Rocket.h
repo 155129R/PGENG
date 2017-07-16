@@ -2,11 +2,16 @@
 #define __ROCKET_H__
 
 #include "BaseWeapon.h"
+#include "cocos2d.h"
+
 class Character;
+
+using namespace cocos2d;
 
 class Rocket : public BaseWeapon
 {
 	Character* character;
+	PhysicsBody* physics;
 	bool fired;
 
 public:

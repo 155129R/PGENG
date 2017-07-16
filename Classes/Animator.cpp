@@ -82,12 +82,12 @@ void Animator::PlayAnimation(AnimationType animType, BaseEntity* entity)
 
 				Vector<SpriteFrame*> animFrames;
 				animFrames.reserve(4);
-				animFrames.pushBack(SpriteFrame::create("Blue_Left2.png", Rect(0, 0, 65, 81)));
-				animFrames.pushBack(SpriteFrame::create("Blue_Left1.png", Rect(0, 0, 65, 81)));
-				animFrames.pushBack(SpriteFrame::create("Blue_Left3.png", Rect(0, 0, 65, 81)));
-				animFrames.pushBack(SpriteFrame::create("Blue_Left1.png", Rect(0, 0, 65, 81)));
+				animFrames.pushBack(SpriteFrame::create("Attack/Attack1.png", Rect(0, 0, 65, 81)));
+				animFrames.pushBack(SpriteFrame::create("Attack/Attack2.png", Rect(0, 0, 65, 81)));
+				animFrames.pushBack(SpriteFrame::create("Attack/Attack3.png", Rect(0, 0, 65, 81)));
+				animFrames.pushBack(SpriteFrame::create("Attack/Attack4.png", Rect(0, 0, 65, 81)));
 
-				Animation* animation = Animation::createWithSpriteFrames(animFrames, 0.35f);
+				Animation* animation = Animation::createWithSpriteFrames(animFrames, 0.05f);
 				Animate* animationRun = Animate::create(animation);
 
 				//  Play animation once using this code without the RepeatForever

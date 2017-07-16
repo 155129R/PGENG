@@ -1,4 +1,5 @@
-	#include"Enemy.h"
+#include "Enemy.h"
+#include "Character.h"
 
 void Enemy::Init(const char* _srcImg, const char* _name, float _x, float _y, float _dir)
 {
@@ -34,19 +35,32 @@ void Enemy::Init(const char* _srcImg, const char* _name, float _x, float _y, flo
 
 }
 
-void Enemy::Update(float _delta, BaseEntity character)
+void Enemy::Update(float _delta, BaseEntity* character)
 {
-	if (isAlive && character.GetAlive())
+	if (isAlive && character->GetAlive())
 	{
 		auto moveEvent = MoveBy::create(0.f, Vec2(m_dir, 0.f) * m_speed);
 		m_mainSprite->runAction(moveEvent);
-
 		m_mainSprite->setVisible(true);
 
 		//Collision detection
-		if (m_mainSprite->boundingBox().intersectsRect(character.getSprite()->getBoundingBox()) ||
-			m_mainSprite->getPosition().x < -m_mainSprite->getContentSize().width)
+		if (m_mainSprite->boundingBox().intersectsRect(character->getSprite()->getBoundingBox()))
 		{
+			Character* player = dynamic_cast<Character*>(character);
+			if (player)
+			{
+				player->TakeDamage();
+			}
+			isAlive = false;
+			m_mainSprite->setVisible(false);
+		}
+		else if (m_mainSprite->getPosition().x < -m_mainSprite->getContentSize().width)
+		{
+			Character* player = dynamic_cast<Character*>(character);
+			if (player)
+			{
+				player->score += 1;
+			}
 			isAlive = false;
 			m_mainSprite->setVisible(false);
 		}

@@ -13,6 +13,8 @@ protected:
 	// The Damage of the projectile
 	int m_Damage;
 
+	float blastRadius;
+
 public:
 	Projectile(const char* _srcImg, float, Vec2, int);
 	Projectile();
@@ -41,6 +43,9 @@ public:
 	int GetDamage();
 	// Set the damage of the projectile
 	void SetDamage(int );
+
+	void SetBlastRadius(float radius);
+	float GetBlastRadius();
 
 	// Set the position of the projectile
 	void SetPosition(Vec2);

@@ -27,22 +27,28 @@ public:
 	
 	virtual void update(float);
 
-	void SpawnEnemy(int);
-
 	// implement the "static create()" method manually
 	CREATE_FUNC(GameScene);
 
 	std::vector<Projectile*> projectileList;
 	Character mainChar;
-
+	ParticleSmoke* m_explosionEmitter;
 private:
+	typedef enum GAME_STATE
+	{
+		RUN,
+		PAUSE,
+		DEFEAT,
+	};
+
 	GLProgram *proPostProcess;
 	InputHandler input;
 	ParallaxBackground parallaxBackground;
+	Label *text;
 
 	EnemyManager* enemyManager;
 
-	std::vector<Enemy*> enemyList;
+	GAME_STATE gameState;
 
 	// Weapon should be in character Class
 	float spawnTimer;

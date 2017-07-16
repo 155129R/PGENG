@@ -10,6 +10,7 @@ EnemyManager::EnemyManager(Node* scene)
 	currentSpawnTimer = spawnTimer;
 	waveSpawned = false;
 	waveNumber = 0;
+	enemySpeed = 10.f;
 
 	//Ground offset ratio is 1072/150 = 7.1467
 	groundOffset = 0;
@@ -55,7 +56,7 @@ EnemyManager::EnemyManager(Node* scene)
 		Enemy* newEnemy = new Enemy();
 		newEnemy->Init("Blue_Front1.png", "Player", 0, 0, -1);
 		enemyNode->addChild(newEnemy->getSprite(), 1);
-		newEnemy->SetSpeed(10.0f);
+		newEnemy->SetSpeed(enemySpeed);
 		newEnemy->SetDirection(-1);
 		newEnemy->SetAlive(false);
 		newEnemy->getSprite()->setVisible(false);
@@ -76,9 +77,9 @@ const char* EnemyManager::getPathForFile(string fileName)
 	string path = CCFileUtils::sharedFileUtils()->getWritablePath() + "\\" + fileName;
 	return path.c_str();
 }
+
 void EnemyManager::SpawnEnemy(float x, float y)
 {
-
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	groundOffset = visibleSize.height / 7.1467;
 
@@ -96,13 +97,14 @@ void EnemyManager::SpawnEnemy(float x, float y)
 	{
 		if (!enemy->GetAlive())
 		{
+			enemy->SetSpeed(enemySpeed);
 			enemy->getSprite()->setPosition(posX, posY);
 			enemy->SetAlive(true);
 			break;
 		}
 	}
 }
-void EnemyManager::Update(double dt, BaseEntity character)
+void EnemyManager::Update(double dt, BaseEntity* character)
 {
 	if (!waveSpawned)
 	{
@@ -127,6 +129,11 @@ void EnemyManager::Update(double dt, BaseEntity character)
 			}
 			waveSpawned = true;
 			waveNumber++;
+			if (waveNumber == enemyPattern.at(0).size())
+			{
+				waveNumber = 0;
+				enemySpeed += 2.5f;
+			}
 			break;
 		}
 
@@ -166,5 +173,5 @@ void EnemyManager::Update(double dt, BaseEntity character)
 
 	for (auto enemy : enemyPool)
 		if (enemy->GetAlive())
-			enemy->Update(dt,character);
+			enemy->Update(dt, character);
 }

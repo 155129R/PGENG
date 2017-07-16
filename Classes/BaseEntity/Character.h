@@ -21,32 +21,38 @@ typedef enum CHARACTER_STATE
 class Character : public BaseEntity
 {
 private:
-	GLProgram *charEffect;
 	cocos2d::Node* node;
-
-	Vec2 mLoc;
-	Vec2 mLocInc;
-
-	Vec2 velocity;
-	const float mass = 5.f;
-	const float jumpForce = 2000.f;
+	const float mass = 10.f;
+	const float jumpForce = 700.f;
+	const float invulDuration = 2.f;
+	const int hits = 3;
+	
+	int health;
 
 	float groundHeight;
 	CHARACTER_STATE charState;
 	BaseWeapon* weapon;
+	PhysicsBody* physics;
 
 	void(Character::*fncStates[CHARACTER_STATE::MAX])(float);
 	void Running(float _deltaTime);
 	void Jumping(float _deltaTime);
 	void Death(float _deltaTime);
 
+	bool invulFlag;
+	float invulTimer;
+	bool visible;
+
 public:
+	int score;
+
 	Character();
 	virtual ~Character();
 
 	void Init(const char* _srcImg, const char* _name, float _x, float _y);
 	void Update(float);
 	void Jump();
+	void Invulerable(float dt);
 
 	CHARACTER_STATE getCharacterState();
 	
@@ -54,6 +60,8 @@ public:
 	BaseWeapon* getWeapon();
 	
 	void ApplyForce(const Vec2& dir, const float& force);
+	void TakeDamage();
+	bool isDead();
 };
 
 #endif // CHARACTER_H

@@ -19,6 +19,8 @@ private:
 	int currentPattern[9][5];
 	string line;
 
+	float enemySpeed;
+
 	const char* getPathForFile(string);
 
 public:
@@ -26,7 +28,5 @@ public:
 	~EnemyManager();
 
 	void SpawnEnemy(float, float);
-	void Update(double dt, BaseEntity character);
-	
-
+	void Update(double dt, BaseEntity* character);
 };

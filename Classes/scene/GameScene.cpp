@@ -12,11 +12,14 @@ USING_NS_CC;
 Scene* GameScene::createScene()
 {
 	// 'scene' is an autorelease object
-	auto scene = Scene::create();
+	auto scene = Scene::createWithPhysics();
 
 	// 'layer' is an autorelease object
 	auto layer = GameScene::create();
 	layer->setTag((int)SceneType::GAMEPLAY);
+
+	PhysicsWorld* world = scene->getPhysicsWorld();
+	world->setGravity(Vec2(0.f, -1000.f));
 
 	// add layer as a child to scene
 	scene->addChild(layer);
@@ -34,6 +37,8 @@ bool GameScene::init()
 	{
 		return false;
 	}
+
+	gameState = GAME_STATE::RUN;
 
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -80,17 +85,28 @@ bool GameScene::init()
 		projectileNode->setName("Missile");
 		this->addChild(projectileNode, 1);
 
-		Projectile* newMissile = new Projectile("Blue_Front1.png", 2.0f, Vec2(1.0f, 0.0f), 1.0f);
+		Projectile* newMissile = new Projectile("missile.png", 2.0f, Vec2(1.0f, 0.0f), 1.0f);
 		projectileNode->addChild(newMissile->getSprite(), 1);
 		newMissile->SetAlive(false);
 		projectileList.push_back(newMissile);
 	}
 
 	enemyManager = new EnemyManager(this);
-	
+
 	spawnTimer = (float)(cocos2d::RandomHelper::random_int(5, 5));
 	tempRandom = 0;
 	allEnemyALive = false;
+	
+	m_explosionEmitter = ParticleSmoke::create();
+	m_explosionEmitter->setVisible(false);
+	this->addChild(m_explosionEmitter, 1);
+
+	text = Label::createWithTTF(std::to_string(mainChar.score), "batman.ttf", 100.f);
+	text->setColor(Color3B(0.f, 0.f, 0.f));
+	text->setPosition(Vec2(visibleSize.width * 0.05f, visibleSize.height * 0.95f));
+	this->addChild(text);
+
+	m_explosionEmitter->pauseEmissions();
 
 	this->scheduleUpdate();
 	return true;
@@ -111,39 +127,26 @@ void GameScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 	input.EnqueueKeyReleased((int)keyCode);
 }
 
-void GameScene::SpawnEnemy(int numberOfEnemy)
-{
-	for (int i = 0; i < numberOfEnemy; i++)
-	{
-		int tempEnemyPosition = cocos2d::RandomHelper::random_int(0, 7);
-		if (!enemyList[tempEnemyPosition]->GetAlive())
-		{
-			allEnemyALive = false;
-			enemyList[tempEnemyPosition]->SetAlive(true);
-			enemyList[tempEnemyPosition]->getSprite()->setPosition(playingSize.width, enemyList[i]->getPosition().y);
-		}
-	}
-}
 void GameScene::update(float _delta)
 {
+	if (gameState == GAME_STATE::DEFEAT || gameState == GAME_STATE::PAUSE)
+		return;
+
+	if (mainChar.isDead())
+		gameState = GAME_STATE::DEFEAT;
+
 	input.RunCommands();
 
+	text->setString(std::to_string(mainChar.score));
 	spawnTimer -= _delta;
 	mainChar.Update(_delta);
 	parallaxBackground.Update(_delta);
 	
-	enemyManager->Update(_delta, mainChar);
-
-	for (auto enemy : enemyList)
-		enemy->Update(_delta, mainChar);
+	enemyManager->Update(_delta, &mainChar);
 
 	//Update for weapon and projectile
 	for (auto projectile : projectileList)
 		projectile->Update(_delta);
-
-	for (auto enemy : enemyList)
-		enemy->Update(_delta, mainChar);
-
 }
 
 void GameScene::menuCloseCallback(Ref* pSender)

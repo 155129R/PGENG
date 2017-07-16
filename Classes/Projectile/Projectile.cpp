@@ -48,7 +48,20 @@ void Projectile::Update(double dt)
 
 			if (game)
 			{
-				game->mainChar.ApplyForce(Vec2(0.f, 1.f), 2000.f);
+				float dstSqr = (m_mainSprite->getPosition() - game->mainChar.getPosition()).getLengthSq();
+				if (dstSqr <= (blastRadius * blastRadius))
+				{
+					float dstRatio = dstSqr / (blastRadius * blastRadius);
+					dstRatio = 1 - dstRatio;
+					cocos2d::log(std::to_string(dstRatio).c_str());
+					float blastForce = 800.f;
+
+					game->mainChar.ApplyForce(Vec2(0.f, 1.f), dstRatio * blastForce);
+					/*game->m_explosionEmitter->setVisible(true);
+					game->m_explosionEmitter->resetSystem();
+					game->m_explosionEmitter->setPosition(this->getPosition());
+					game->m_explosionEmitter->resumeEmissions();*/
+				}
 			}
 		}
 	}
@@ -79,6 +92,16 @@ void Projectile::SetDamage(int newDamage)
 int Projectile::GetDamage()
 {
 	return m_Damage;
+}
+
+void Projectile::SetBlastRadius(float radius)
+{
+	blastRadius = radius;
+}
+
+float Projectile::GetBlastRadius()
+{
+	return blastRadius;
 }
 
 // Set the direction of the projectile
