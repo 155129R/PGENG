@@ -23,7 +23,6 @@ public:
 	void Update(float _delta, BaseEntity* character);
 
 	BaseEntity::EntityType GetPowerUpType();
-
 };
 
 #endif // POWERUP_H

@@ -3,6 +3,7 @@
 #include <sstream>
 #include <fstream>
 
+#include "../BaseEntity/PowerUps/PowerUp.h"
 
 EnemyManager::EnemyManager(Node* scene)
 {
@@ -36,7 +37,7 @@ EnemyManager::EnemyManager(Node* scene)
 		//Loop through the line
 		for (int i = 0; i < line.size(); i++)
 		{
-			if (line.at(i) == '1' || line.at(i) == '0')
+			if (line.at(i) == '1' || line.at(i) == '0' || line.at(i) == '2')
 			{
 				enemyPatternY.push_back(line.at(i) - '0');
 			}
@@ -54,7 +55,7 @@ EnemyManager::EnemyManager(Node* scene)
 		scene->addChild(enemyNode, 1);
 
 		Enemy* newEnemy = new Enemy();
-		newEnemy->Init("Blue_Front1.png", "Player", 0, 0, -1);
+		newEnemy->Init("Blue_Front1.png", "Enemy", 0, 0, -1);
 		enemyNode->addChild(newEnemy->getSprite(), 1);
 		newEnemy->SetSpeed(enemySpeed);
 		newEnemy->SetDirection(-1);
@@ -63,7 +64,24 @@ EnemyManager::EnemyManager(Node* scene)
 
 		enemyPool.push_back(newEnemy);
 	}
-	
+
+	for (int i = 0; i < 35; i++)
+	{
+		auto powerNode = Node::create();
+		powerNode->setName("powerNode");
+		powerNode->setPosition(10, 0);
+		scene->addChild(powerNode, 1);
+
+		PowerUp* newPower = new PowerUp();
+		newPower->Init("heart.png", "LIFE", 0, 0);
+		powerNode->addChild(newPower->getSprite(), 1);
+		newPower->SetSpeed(enemySpeed);
+		newPower->SetDirection(-1);
+		newPower->SetAlive(false);
+		newPower->getSprite()->setVisible(false);
+
+		powerPool.push_back(newPower);
+	}
 }
 
 EnemyManager::~EnemyManager()
@@ -104,6 +122,35 @@ void EnemyManager::SpawnEnemy(float x, float y)
 		}
 	}
 }
+
+void EnemyManager::SpawnPowerUp(float x, float y)
+{
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	groundOffset = visibleSize.height / 7.1467;
+
+	float posX = visibleSize.width;
+
+	//(visibleSize.height - groundOffset) is the distance between the ground and the top of the screen
+	//(visibleSize.height - groundOffset) / 9 is the distance per round for the enemy
+	//(9 - y) is to invert the 0 to 9 and 9 to 0 multiply
+	float posY = groundOffset + (((visibleSize.height - groundOffset) / 9) * (9 - y) - (visibleSize.height - groundOffset) / 9);
+
+	if (y == 9)
+		posY = visibleSize.height - 100;
+
+	for (auto power : powerPool)
+	{
+		if (!power->GetAlive())
+		{
+			power->SetSpeed(enemySpeed);
+			power->getSprite()->setPosition(posX, posY);
+			power->SetAlive(true);
+			break;
+		}
+	}
+}
+
+
 void EnemyManager::Update(double dt, BaseEntity* character)
 {
 	if (!waveSpawned)
@@ -125,8 +172,12 @@ void EnemyManager::Update(double dt, BaseEntity* character)
 				{
 					SpawnEnemy(x, y);
 				}
-
+				else if (enemyPattern[y][x] == 2)
+				{
+					SpawnPowerUp(x, y);
+				}
 			}
+
 			waveSpawned = true;
 			waveNumber++;
 			if (waveNumber == enemyPattern.at(0).size())
@@ -174,4 +225,8 @@ void EnemyManager::Update(double dt, BaseEntity* character)
 	for (auto enemy : enemyPool)
 		if (enemy->GetAlive())
 			enemy->Update(dt, character);
+
+	for (auto power : powerPool)
+		if (power->GetAlive())
+			power->Update(dt, character);
 }

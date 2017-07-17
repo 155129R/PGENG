@@ -4,10 +4,14 @@
 using std::vector;
 using std::string;
 
+class PowerUp;
+
 class EnemyManager
 {
 private:
 	vector<Enemy*> enemyPool;
+	vector<PowerUp*> powerPool;
+
 	float spawnTimer;
 	float currentSpawnTimer;
 	bool waveSpawned;
@@ -28,5 +32,6 @@ public:
 	~EnemyManager();
 
 	void SpawnEnemy(float, float);
+	void SpawnPowerUp(float x, float y);
 	void Update(double dt, BaseEntity* character);
 };

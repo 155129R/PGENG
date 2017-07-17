@@ -151,6 +151,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\BaseEntity\BaseEntity.cpp" />
     <ClCompile Include="..\Classes\BaseEntity\Character.cpp" />
     <ClCompile Include="..\Classes\BaseEntity\Enemy.cpp" />
+    <ClCompile Include="..\Classes\BaseEntity\PowerUps\PowerUp.cpp" />
     <ClCompile Include="..\Classes\Input\InputHandler.cpp" />
     <ClCompile Include="..\Classes\Manager\EnemyManager.cpp" />
     <ClCompile Include="..\Classes\Projectile\Missile.cpp" />
@@ -169,6 +170,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\BaseEntity\BaseEntity.h" />
     <ClInclude Include="..\Classes\BaseEntity\Character.h" />
     <ClInclude Include="..\Classes\BaseEntity\Enemy.h" />
+    <ClInclude Include="..\Classes\BaseEntity\PowerUps\PowerUp.h" />
     <ClInclude Include="..\Classes\Commands\ActionCommand.h" />
     <ClInclude Include="..\Classes\Commands\Command.h" />
     <ClInclude Include="..\Classes\Commands\InputCommandBase.h" />

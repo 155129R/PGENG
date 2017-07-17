@@ -38,7 +38,6 @@ private:
 	void Running(float _deltaTime);
 	void Jumping(float _deltaTime);
 	void Death(float _deltaTime);
-	void Heal();
 
 	bool invulFlag;
 	float invulTimer;
@@ -54,6 +53,8 @@ public:
 	void Update(float);
 	void Jump();
 	void Invulerable(float dt);
+	void Heal();
+
 
 	CHARACTER_STATE getCharacterState();
 	

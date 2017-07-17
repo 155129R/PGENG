@@ -37,6 +37,9 @@
     <Filter Include="Manager">
       <UniqueIdentifier>{36e08753-b08b-4f60-9617-593ea972531f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BaseEntity\PowerUp">
+      <UniqueIdentifier>{354f4d1f-78b4-4634-a5b2-a59c05b76dc0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -82,6 +85,9 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Manager\EnemyManager.cpp">
       <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\BaseEntity\PowerUps\PowerUp.cpp">
+      <Filter>BaseEntity\PowerUp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -152,6 +158,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Manager\EnemyManager.h">
       <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BaseEntity\PowerUps\PowerUp.h">
+      <Filter>BaseEntity\PowerUp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
