@@ -145,6 +145,15 @@ void Character::TakeDamage()
 	}
 }
 
+void Character::Heal()
+{
+	if (!invulFlag)
+	{
+		if(health < hits)
+		health += 1;
+	}
+}
+
 bool Character::isDead()
 {
 	return health <= 0;

@@ -17,6 +17,7 @@ public:
 		NIL = 0,
 		CHARACTER,
 		ENEMY,
+		POWERUP_LIFE,
 		MAX
 	}entityType;
 

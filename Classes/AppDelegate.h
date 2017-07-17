@@ -3,7 +3,7 @@
 
 #include "cocos2d.h"
 #include "scene\SceneManager.h"
-
+#include "SimpleAudioEngine.h"
 /**
 @brief    The cocos2d Application.
 

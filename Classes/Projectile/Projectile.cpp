@@ -57,10 +57,10 @@ void Projectile::Update(double dt)
 					float blastForce = 800.f;
 
 					game->mainChar.ApplyForce(Vec2(0.f, 1.f), dstRatio * blastForce);
-					/*game->m_explosionEmitter->setVisible(true);
+					game->m_explosionEmitter->setVisible(true);
 					game->m_explosionEmitter->resetSystem();
 					game->m_explosionEmitter->setPosition(this->getPosition());
-					game->m_explosionEmitter->resumeEmissions();*/
+					game->m_explosionEmitter->resumeEmissions();
 				}
 			}
 		}

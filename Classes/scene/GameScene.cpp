@@ -5,6 +5,7 @@
 #include "Commands\TemplateAction.h"
 #include "Projectile\Projectile.h"
 #include "Weapon\BaseWeapon.h"
+#include "BaseEntity\PowerUps\PowerUp.h"
 
 ///////////////////////////CTRL F (Update not running)
 USING_NS_CC;
@@ -97,9 +98,18 @@ bool GameScene::init()
 	tempRandom = 0;
 	allEnemyALive = false;
 	
-	m_explosionEmitter = ParticleSmoke::create();
+	m_explosionEmitter = ParticleExplosion::create();
 	m_explosionEmitter->setVisible(false);
 	this->addChild(m_explosionEmitter, 1);
+	
+	auto powerUpNode = Node::create();
+	powerUpNode->setName("LIFE");
+	this->addChild(powerUpNode);
+
+	//PowerUp* powerUp = new PowerUp();
+	//powerUp->Init("heart.png", "LIFE", 50, mainChar.getPosition().y);
+	//powerUpNode->addChild(powerUp->getSprite(), 1);
+
 
 	text = Label::createWithTTF(std::to_string(mainChar.score), "batman.ttf", 100.f);
 	text->setColor(Color3B(0.f, 0.f, 0.f));
@@ -107,6 +117,9 @@ bool GameScene::init()
 	this->addChild(text);
 
 	m_explosionEmitter->pauseEmissions();
+
+	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
+	audio->playBackgroundMusic("Sounds/MotifLoop.mp3", true);
 
 	this->scheduleUpdate();
 	return true;

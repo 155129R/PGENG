@@ -32,7 +32,7 @@ public:
 
 	std::vector<Projectile*> projectileList;
 	Character mainChar;
-	ParticleSmoke* m_explosionEmitter;
+	ParticleExplosion* m_explosionEmitter;
 private:
 	typedef enum GAME_STATE
 	{
