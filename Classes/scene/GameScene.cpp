@@ -100,7 +100,7 @@ bool GameScene::init()
 	
 	m_explosionEmitter = ParticleExplosion::create();
 	m_explosionEmitter->setVisible(false);
-	this->addChild(m_explosionEmitter, 1)
+	this->addChild(m_explosionEmitter, 1);
 
 	text = Label::createWithTTF(std::to_string(mainChar.score), "batman.ttf", 100.f);
 	text->setColor(Color3B(0.f, 0.f, 0.f));
