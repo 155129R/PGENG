@@ -158,3 +158,13 @@ bool Character::isDead()
 {
 	return health <= 0;
 }
+
+int Character::GetHits()
+{
+	return hits;
+}
+
+int Character::GetHealth()
+{
+	return health;
+}

@@ -102,10 +102,29 @@ bool GameScene::init()
 	m_explosionEmitter->setVisible(false);
 	this->addChild(m_explosionEmitter, 1);
 
+	//Lives UI
+	for (int i = 0; i < mainChar.GetHits(); i++)
+	{
+		auto imageView = ui::ImageView::create("heart.png");
+		imageView->setPosition(Vec2(visibleSize.width * 0.10f + (10.f * i), visibleSize.height * 0.95f));
+		this->addChild(imageView);
+		ImageList.push_back(imageView);
+	}
+
+	//Score UI
 	text = Label::createWithTTF(std::to_string(mainChar.score), "batman.ttf", 100.f);
 	text->setColor(Color3B(0.f, 0.f, 0.f));
 	text->setPosition(Vec2(visibleSize.width * 0.05f, visibleSize.height * 0.95f));
 	this->addChild(text);
+	text->setPositionZ(5.f);
+
+	//Lose Text
+	loseText = Label::createWithTTF("You Lose", "batman.ttf", 200.f);
+	loseText->setColor(Color3B(0.f, 0.f, 0.f));
+	loseText->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.5f));
+	this->addChild(loseText);
+	loseText->setVisible(false);
+	loseText->setPositionZ(5.f);
 
 	m_explosionEmitter->pauseEmissions();
 
@@ -137,8 +156,10 @@ void GameScene::update(float _delta)
 		return;
 
 	if (mainChar.isDead())
+	{
 		gameState = GAME_STATE::DEFEAT;
-
+		loseText->setVisible(true);
+	}
 	input.RunCommands();
 
 	text->setString(std::to_string(mainChar.score));
@@ -147,6 +168,11 @@ void GameScene::update(float _delta)
 	parallaxBackground.Update(_delta);
 	
 	enemyManager->Update(_delta, &mainChar);
+
+	if (GetNumberOfUIHearts() < mainChar.GetHealth())
+		AddUIHeart();
+	if (GetNumberOfUIHearts() > mainChar.GetHealth())
+		RemoveUIHeart();
 
 	//Update for weapon and projectile
 	for (auto projectile : projectileList)
@@ -167,4 +193,42 @@ void GameScene::menuCloseCallback(Ref* pSender)
 	//EventCustom customEndEvent("game_scene_close_event");
 	//_eventDispatcher->dispatchEvent(&customEndEvent);
 
+}
+
+int GameScene::GetNumberOfUIHearts()
+{
+	int returnInt = 0;
+
+	for (int i = 0; i < ImageList.size(); i++)
+	{
+		if (ImageList[i]->isVisible())
+			returnInt++;
+	}
+
+	return returnInt;
+}
+
+void GameScene::AddUIHeart()
+{
+	int iter = 0;
+	for (iter = 0; iter < ImageList.size(); iter++)
+	{
+		if (!ImageList[iter]->isVisible())
+			break;
+	}
+	cocos2d::log("GAIN HEART");
+	ImageList[iter]->setVisible(true);
+
+}
+
+void GameScene::RemoveUIHeart()
+{
+	int iter = 0;
+	for (iter = ImageList.size() - 1; iter >= 0; --iter)
+	{
+		if (ImageList[iter]->isVisible())
+			break;
+	}
+	cocos2d::log("REMOVE HEART");
+	ImageList[iter]->setVisible(false);
 }

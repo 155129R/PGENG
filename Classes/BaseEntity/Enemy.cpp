@@ -14,10 +14,8 @@ void Enemy::Init(const char* _srcImg, const char* _name, float _x, float _y, flo
 	mLocInc.set(.005f, .01f);
 
 	entityType = EntityType::ENEMY;
-
 	animator.animType = Animator::ENEMYRUN;
-	
-	animator.PlayAnimation(animator.animType, (BaseEntity*)this);
+	animator.PlayAnimation(animator.animType, this);
 	
 	m_speed = 1.f;
 

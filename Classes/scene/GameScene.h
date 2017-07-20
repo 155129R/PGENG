@@ -7,6 +7,7 @@
 #include "Background\ParallaxBackground.h"
 #include "Manager\EnemyManager.h"
 #include "cocos2d.h"
+#include "ui\UIImageView.h"
 
 using namespace cocos2d;
 
@@ -33,6 +34,7 @@ public:
 	std::vector<Projectile*> projectileList;
 	Character mainChar;
 	ParticleExplosion* m_explosionEmitter;
+	std::vector<ui::ImageView*> ImageList;
 private:
 	typedef enum GAME_STATE
 	{
@@ -45,6 +47,7 @@ private:
 	InputHandler input;
 	ParallaxBackground parallaxBackground;
 	Label *text;
+	Label *loseText;
 
 	EnemyManager* enemyManager;
 
@@ -61,6 +64,10 @@ private:
 	
 	//for getting window screen
 	Size playingSize;
+
+	int GetNumberOfUIHearts();
+	void AddUIHeart();
+	void RemoveUIHeart();
 };
 
 

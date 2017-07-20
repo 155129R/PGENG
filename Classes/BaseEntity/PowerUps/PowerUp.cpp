@@ -25,7 +25,7 @@ void PowerUp::Init(const char* _srcImg, const char* _name, float _x, float _y)
 	m_dir = -1;
 	entityType = EntityType::POWERUP_LIFE;
 
-	isAlive = true;                                           
+	isAlive = true;
 }
 
 void PowerUp::Update(float _delta, BaseEntity* character)

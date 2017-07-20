@@ -55,7 +55,7 @@ EnemyManager::EnemyManager(Node* scene)
 		scene->addChild(enemyNode, 1);
 
 		Enemy* newEnemy = new Enemy();
-		newEnemy->Init("Blue_Front1.png", "Enemy", 0, 0, -1);
+		newEnemy->Init("Attack/Attack1.png", "Enemy", 0, 0, -1);
 		enemyNode->addChild(newEnemy->getSprite(), 1);
 		newEnemy->SetSpeed(enemySpeed);
 		newEnemy->SetDirection(-1);

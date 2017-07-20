@@ -64,6 +64,9 @@ public:
 	void ApplyForce(const Vec2& dir, const float& force);
 	void TakeDamage();
 	bool isDead();
+
+	int GetHits();
+	int GetHealth();
 };
 
 #endif // CHARACTER_H
