@@ -51,9 +51,6 @@
     <ClCompile Include="..\Classes\scene\GameScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\scene\HelloWorldScene.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\scene\SceneManager.cpp" />
     <ClCompile Include="..\Classes\Animator.cpp" />
     <ClCompile Include="..\Classes\BaseEntity\BaseEntity.cpp">
@@ -98,9 +95,6 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\scene\GameScene.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\scene\HelloWorldScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\scene\SceneManager.h" />

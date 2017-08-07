@@ -157,7 +157,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Projectile\Missile.cpp" />
     <ClCompile Include="..\Classes\Projectile\Projectile.cpp" />
     <ClCompile Include="..\Classes\scene\GameScene.cpp" />
-    <ClCompile Include="..\Classes\scene\HelloWorldScene.cpp" />
     <ClCompile Include="..\Classes\scene\SceneManager.cpp" />
     <ClCompile Include="..\Classes\Weapon\Rocket.cpp" />
     <ClCompile Include="main.cpp" />
@@ -183,7 +182,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Projectile\Missile.h" />
     <ClInclude Include="..\Classes\Projectile\Projectile.h" />
     <ClInclude Include="..\Classes\scene\GameScene.h" />
-    <ClInclude Include="..\Classes\scene\HelloWorldScene.h" />
     <ClInclude Include="..\Classes\scene\SceneManager.h" />
     <ClInclude Include="..\Classes\Weapon\BaseWeapon.h" />
     <ClInclude Include="..\Classes\Weapon\Rocket.h" />

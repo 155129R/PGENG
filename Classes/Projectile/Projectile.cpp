@@ -1,4 +1,4 @@
-#include"Projectile\Projectile.h"
+#include"Projectile/Projectile.h"
 
 #include "../scene/SceneManager.h"
 #include "../scene/GameScene.h"

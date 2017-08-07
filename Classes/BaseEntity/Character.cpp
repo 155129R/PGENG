@@ -1,7 +1,7 @@
 #include "Character.h"
-#include "scene\\HelloWorldScene.h"
+#include "scene/HelloWorldScene.h"
 
-#include "Weapon\Rocket.h"
+#include "Weapon/Rocket.h"
 
 
 Character::Character()

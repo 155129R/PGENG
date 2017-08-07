@@ -1,7 +1,7 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
-#include "Classes\Animator.h"
+#include "../Animator.h"
 #include "BaseEntity.h"
 #include "cocos2d.h"
 

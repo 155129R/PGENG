@@ -1,5 +1,5 @@
 #include "PowerUp.h"
-#include "..\Character.h"
+#include "../Character.h"
 
 
 PowerUp::PowerUp()

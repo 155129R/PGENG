@@ -1,13 +1,13 @@
 #ifndef __GAME_SCENE_H__
 #define __GAME_SCENE_H__
 
-#include "BaseEntity\Character.h"
-#include "BaseEntity\Enemy.h"
-#include "Input\InputHandler.h"
-#include "Background\ParallaxBackground.h"
-#include "Manager\EnemyManager.h"
+#include "BaseEntity/Character.h"
+#include "BaseEntity/Enemy.h"
+#include "Input/InputHandler.h"
+#include "Background/ParallaxBackground.h"
+#include "Manager/EnemyManager.h"
 #include "cocos2d.h"
-#include "ui\UIImageView.h"
+#include "ui/UIImageView.h"
 
 using namespace cocos2d;
 
@@ -25,6 +25,8 @@ public:
 	//Temporary until Input for touch is in
 	virtual void onKeyPressed(EventKeyboard::KeyCode, Event*);
 	virtual void onKeyReleased(EventKeyboard::KeyCode, Event*);
+
+	virtual bool onTouchBegan(Touch* _touch, Event* _event);
 	
 	virtual void update(float);
 
@@ -64,6 +66,8 @@ private:
 	
 	//for getting window screen
 	Size playingSize;
+
+	void InitTouch();
 
 	int GetNumberOfUIHearts();
 	void AddUIHeart();

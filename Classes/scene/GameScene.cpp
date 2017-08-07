@@ -2,10 +2,10 @@
 #include "SimpleAudioEngine.h"
 #include "SceneManager.h"
 
-#include "Commands\TemplateAction.h"
-#include "Projectile\Projectile.h"
-#include "Weapon\BaseWeapon.h"
-#include "BaseEntity\PowerUps\PowerUp.h"
+#include "Commands/TemplateAction.h"
+#include "Projectile/Projectile.h"
+#include "Weapon/BaseWeapon.h"
+#include "BaseEntity/PowerUps/PowerUp.h"
 
 ///////////////////////////CTRL F (Update not running)
 USING_NS_CC;
@@ -66,11 +66,12 @@ bool GameScene::init()
 	playerNode->setPosition(0, 0);
 	this->addChild(playerNode, 1);
 
-	mainChar.Init("Blue_Front1.png", "Player", 80, 150);
+	mainChar.Init("PlayerIdle/idle1.png", "Player", 80, 150);
 	playerNode->addChild(mainChar.getSprite(), 1);
 
 	// Input control setup
 	input.BindCommandAndKey(Input_Game::USE_WEAPON, new TemplateAction<BaseWeapon>(mainChar.getWeapon(), &BaseWeapon::use, Input_Action::PRESSED), (int)EventKeyboard::KeyCode::KEY_SPACE);
+	//input.BindCommandAndKey(Input_Game::USE_WEAPON, new TemplateAction<BaseWeapon>(mainChar.getWeapon(), &BaseWeapon::use, Input_Action::PRESSED), (int)EventTouch::);
 
 	// Load background
 	parallaxBackground.Init(visibleSize.width, visibleSize.height);
@@ -131,8 +132,22 @@ bool GameScene::init()
 	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
 	audio->playBackgroundMusic("Sounds/MotifLoop.mp3", true);
 
+	InitTouch();
+
 	this->scheduleUpdate();
 	return true;
+}
+
+void GameScene::InitTouch()
+{
+	auto touchListener = EventListenerTouchOneByOne::create();
+
+	touchListener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
+	touchListener->onTouchEnded = CC_CALLBACK_2(GameScene::onTouchEnded, this);
+	touchListener->onTouchMoved = CC_CALLBACK_2(GameScene::onTouchMoved, this);
+	touchListener->onTouchCancelled = CC_CALLBACK_2(GameScene::onTouchCancelled, this);
+
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
 }
 
 void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
@@ -148,6 +163,12 @@ void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 void GameScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 {
 	input.EnqueueKeyReleased((int)keyCode);
+}
+
+bool GameScene::onTouchBegan(Touch* _touch, Event* _event)
+{
+	mainChar.getWeapon()->use();
+	return true;
 }
 
 void GameScene::update(float _delta)

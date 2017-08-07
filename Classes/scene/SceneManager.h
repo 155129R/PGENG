@@ -1,12 +1,12 @@
 #ifndef SCENEMANAGER_H
 #define SCENEMANAGER_H
 
-#include "..\Constants\Constants.h"
+#include "../Constants/Constants.h"
 
 class SceneManager
 {
 public:
-	static SceneManager* getInstance();
+	static SceneManager& getInstance();
 	~SceneManager();
 	void runSceneWithType(const SceneType sceneType);
 	void returnToPrevScene();
@@ -14,7 +14,6 @@ public:
 private:
 	SceneType _prevSceneType;
 	SceneType _currSceneType;
-	static SceneManager* instance;
 	SceneManager();
 
 };

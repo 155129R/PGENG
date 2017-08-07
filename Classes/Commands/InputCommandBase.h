@@ -2,7 +2,7 @@
 #define __INPUT_COMMAND_BASE_H__
 
 #include "Command.h"
-#include "Constants\InputConstant.h"
+#include "Constants/InputConstant.h"
 
 class InputCommandBase : public Command
 {

@@ -1,5 +1,6 @@
 #pragma once
-#include "Classes\Animator.h"
+#include "../Animator.h"
+
 class BaseEntity
 {
 protected:

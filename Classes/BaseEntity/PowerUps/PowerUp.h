@@ -1,8 +1,8 @@
 #ifndef POWERUP_H
 #define POWERUP_H
 
-#include "Classes\Animator.h"
-#include "..\BaseEntity.h"
+#include "../../Animator.h"
+#include "../BaseEntity.h"
 #include "cocos2d.h"
 
 using namespace cocos2d;

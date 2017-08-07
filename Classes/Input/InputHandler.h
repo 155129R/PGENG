@@ -5,10 +5,10 @@
 #include <list>
 #include <vector>
 
-#include "Commands\InputCommandBase.h"
-#include "Commands\ActionCommand.h"
-#include "Commands\StateCommand.h"
-#include "Constants\InputConstant.h"
+#include "Commands/InputCommandBase.h"
+#include "Commands/ActionCommand.h"
+#include "Commands/StateCommand.h"
+#include "Constants/InputConstant.h"
 
 using std::queue;
 using std::list;

@@ -1,6 +1,6 @@
 #include "ParallaxBackground.h"
 #include "cocos2d.h"
-#include "math\CCMath.h"
+#include "math/CCMath.h"
 
 using namespace cocos2d;
 

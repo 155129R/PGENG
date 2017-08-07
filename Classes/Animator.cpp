@@ -1,7 +1,7 @@
-#include "Classes\Animator.h"
+#include "/Animator.h"
 
 //Forward declaration for classes since we can't cross include
-#include "Classes\BaseEntity\Character.h"
+#include "/BaseEntity/Character.h"
 
 void Animator::PlayAnimation(AnimationType animType, BaseEntity* entity)
 {

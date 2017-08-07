@@ -1,17 +1,11 @@
 #include "SceneManager.h"
-#include "..\scene\HelloWorldScene.h"
-#include "..\scene\GameScene.h"
+#include "GameScene.h"
 
 using namespace cocos2d;
 
-//Declaration of singleton
-SceneManager* SceneManager::instance = NULL;
-
-SceneManager* SceneManager::getInstance()
+SceneManager& SceneManager::getInstance()
 {
-	if (!instance)
-		instance = new SceneManager();
-	
+	static SceneManager instance;
 	return instance;
 }
 
@@ -31,10 +25,6 @@ void SceneManager::runSceneWithType(const SceneType sceneType)
 
 	switch (sceneType)
 	{
-	case SceneType::TEST:
-		sceneToRun = HelloWorld::createScene();
-		break;
-
 	case SceneType::GAMEPLAY:
 		sceneToRun = GameScene::createScene();
 		break;
