@@ -1,8 +1,8 @@
 #ifndef  _APP_DELEGATE_H_
 #define  _APP_DELEGATE_H_
 
+#include "SceneManager.h"
 #include "cocos2d.h"
-#include "scene/SceneManager.h"
 #include "SimpleAudioEngine.h"
 /**
 @brief    The cocos2d Application.

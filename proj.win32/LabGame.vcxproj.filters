@@ -48,43 +48,51 @@
     <ClCompile Include="..\Classes\AppDelegate.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\scene\GameScene.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\scene\SceneManager.cpp" />
     <ClCompile Include="..\Classes\Animator.cpp" />
-    <ClCompile Include="..\Classes\BaseEntity\BaseEntity.cpp">
+    <ClCompile Include="..\Classes\ParallaxBackground.cpp">
+      <Filter>Background</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ScrollingBackground.cpp">
+      <Filter>Background</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\PowerUp.cpp">
+      <Filter>BaseEntity\PowerUp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\BaseEntity.cpp">
       <Filter>BaseEntity</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\BaseEntity\Character.cpp">
+    <ClCompile Include="..\Classes\Character.cpp">
       <Filter>BaseEntity</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\BaseEntity\Enemy.cpp">
+    <ClCompile Include="..\Classes\Enemy.cpp">
       <Filter>BaseEntity</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Input\InputHandler.cpp">
+    <ClCompile Include="..\Classes\InputHandler.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Background\ScrollingBackground.cpp">
-      <Filter>Background</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Background\ParallaxBackground.cpp">
-      <Filter>Background</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Weapon\Rocket.cpp">
-      <Filter>Weapon</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Projectile\Missile.cpp">
-      <Filter>Projectile</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Projectile\Projectile.cpp">
-      <Filter>Projectile</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Manager\EnemyManager.cpp">
+    <ClCompile Include="..\Classes\EnemyManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\BaseEntity\PowerUps\PowerUp.cpp">
-      <Filter>BaseEntity\PowerUp</Filter>
+    <ClCompile Include="..\Classes\Missile.cpp">
+      <Filter>Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Projectile.cpp">
+      <Filter>Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Rocket.cpp">
+      <Filter>Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SceneManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MainmenuScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SettingScene.cpp">
+      <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -94,67 +102,75 @@
     <ClInclude Include="..\Classes\AppDelegate.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\scene\GameScene.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\scene\SceneManager.h" />
-    <ClInclude Include="..\Classes\Constants\Constants.h">
-      <Filter>Constants</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Animator.h" />
-    <ClInclude Include="..\Classes\BaseEntity\Character.h">
+    <ClInclude Include="..\Classes\ParallaxBackground.h">
+      <Filter>Background</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ScrollingBackground.h">
+      <Filter>Background</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\PowerUp.h">
+      <Filter>BaseEntity\PowerUp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BaseEntity.h">
       <Filter>BaseEntity</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\BaseEntity\BaseEntity.h">
+    <ClInclude Include="..\Classes\Character.h">
       <Filter>BaseEntity</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\BaseEntity\Enemy.h">
+    <ClInclude Include="..\Classes\Enemy.h">
       <Filter>BaseEntity</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Constants\InputConstant.h">
+    <ClInclude Include="..\Classes\ActionCommand.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Command.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\InputCommandBase.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\StateCommand.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TemplateAction.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Constants.h">
       <Filter>Constants</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Input\InputHandler.h">
+    <ClInclude Include="..\Classes\InputConstant.h">
+      <Filter>Constants</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\InputHandler.h">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Commands\ActionCommand.h">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Commands\Command.h">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Commands\InputCommandBase.h">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Commands\StateCommand.h">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Background\ScrollingBackground.h">
-      <Filter>Background</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Background\ParallaxBackground.h">
-      <Filter>Background</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Weapon\BaseWeapon.h">
-      <Filter>Weapon</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Commands\TemplateAction.h">
-      <Filter>Command</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Weapon\Rocket.h">
-      <Filter>Weapon</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Projectile\Missile.h">
-      <Filter>Projectile</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Projectile\Projectile.h">
-      <Filter>Projectile</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Manager\EnemyManager.h">
+    <ClInclude Include="..\Classes\EnemyManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\BaseEntity\PowerUps\PowerUp.h">
-      <Filter>BaseEntity\PowerUp</Filter>
+    <ClInclude Include="..\Classes\Missile.h">
+      <Filter>Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Projectile.h">
+      <Filter>Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BaseWeapon.h">
+      <Filter>Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Rocket.h">
+      <Filter>Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SceneManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MainmenuScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\SettingScene.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
