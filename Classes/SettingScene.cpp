@@ -1,6 +1,6 @@
 #include "SettingScene.h"
 #include "SceneManager.h"
-#include "ui\UIButton.h"
+#include "ui/UIButton.h"
 #include "SimpleAudioEngine.h"
 
 ///////////////////////////CTRL F (Update not running)
@@ -40,7 +40,7 @@ bool SettingScene::init()
 	auto title = Sprite::create();
 	title->initWithFile("ui/settings-title.png");
 	title->setPosition(Vec2(playingSize.width * 0.5f, playingSize.height * 0.75f));
-	title->setScale(2.f);
+	title->setScale(1.5f);
 	this->addChild(title);
 	
 	InitButtons();
@@ -53,8 +53,8 @@ void SettingScene::InitButtons()
 	// Background Volume Slider
 	auto backgroundVolumeImage = Sprite::create();
 	backgroundVolumeImage->initWithFile("ui/background-volume.png");
-	backgroundVolumeImage->setPosition(Vec2(playingSize.width * 0.45f, playingSize.height * 0.35f));
-	backgroundVolumeImage->setScale(2.f);
+	backgroundVolumeImage->setPosition(Vec2(playingSize.width * 0.38f, playingSize.height * 0.4f));
+	backgroundVolumeImage->setScale(2.5f);
 	this->addChild(backgroundVolumeImage);
 
 	backgroundSlider = ui::Slider::create();
@@ -70,14 +70,15 @@ void SettingScene::InitButtons()
 			CocosDenshion::SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(volume);
 		}
 	});
-	backgroundSlider->setPosition(Vec2(playingSize.width * 0.6f, playingSize.height * 0.35f));
+	backgroundSlider->setPosition(Vec2(playingSize.width * 0.6f, playingSize.height * 0.4f));
+	backgroundSlider->setScale(2.f);
 	this->addChild(backgroundSlider);
 
 	// Effects Volume Slider
 	auto effectVolumeImage = Sprite::create();
 	effectVolumeImage->initWithFile("ui/effects-volume.png");
-	effectVolumeImage->setPosition(Vec2(playingSize.width * 0.45f, playingSize.height * 0.3f));
-	effectVolumeImage->setScale(2.f);
+	effectVolumeImage->setPosition(Vec2(playingSize.width * 0.38f, playingSize.height * 0.3f));
+	effectVolumeImage->setScale(2.5f);
 	this->addChild(effectVolumeImage);
 
 	effectSlider = ui::Slider::create();
@@ -87,13 +88,15 @@ void SettingScene::InitButtons()
 	effectSlider->setPercent(CocosDenshion::SimpleAudioEngine::getInstance()->getEffectsVolume() * 100);
 	effectSlider->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
 	{
-		if (type == ui::Widget::TouchEventType::ENDED)
+		if (type == ui::Widget::TouchEventType::MOVED)
 		{
+			CCLOG("I HAVED MOVED\n");
 			float volume = (float)effectSlider->getPercent() / 100.0f;
 			CocosDenshion::SimpleAudioEngine::getInstance()->setEffectsVolume(volume);
 		}
 	});
 	effectSlider->setPosition(Vec2(playingSize.width * 0.6f, playingSize.height * 0.3f));
+	effectSlider->setScale(2.f);
 	this->addChild(effectSlider);
 
 	// Return

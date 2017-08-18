@@ -1,7 +1,7 @@
 #include "MainmenuScene.h"
 #include "SimpleAudioEngine.h"
 #include "SceneManager.h"
-#include "ui\UIButton.h"
+#include "ui/UIButton.h"
 
 ///////////////////////////CTRL F (Update not running)
 USING_NS_CC;
@@ -40,7 +40,7 @@ bool MainmenuScene::init()
 	auto title = Sprite::create();
 	title->initWithFile("ui/Title.png");
 	title->setPosition(Vec2(playingSize.width * 0.5f, playingSize.height * 0.75f));
-	title->setScale(2.f);
+	title->setScale(1.5f);
 	this->addChild(title);
 	
 	InitButtons();
@@ -60,8 +60,8 @@ void MainmenuScene::InitButtons()
 			SceneManager::getInstance().runSceneWithType(CONSTANTS::SceneType::GAMEPLAY);
 		}
 	});
-	button->setPosition(Vec2(playingSize.width * 0.45f, playingSize.height * 0.3f));
-	button->setScale(2.f);
+	button->setPosition(Vec2(playingSize.width * 0.44f, playingSize.height * 0.35f));
+	button->setScale(2.5f);
 	this->addChild(button);
 
 	// Options Button
@@ -73,8 +73,8 @@ void MainmenuScene::InitButtons()
 			SceneManager::getInstance().runSceneWithType(CONSTANTS::SceneType::SETTINGS);
 		}
 	});
-	button->setPosition(Vec2(playingSize.width * 0.44f, playingSize.height * 0.2f));
-	button->setScale(2.f);
+	button->setPosition(Vec2(playingSize.width * 0.43f, playingSize.height * 0.2f));
+	button->setScale(2.5f);
 	this->addChild(button);
 }
 

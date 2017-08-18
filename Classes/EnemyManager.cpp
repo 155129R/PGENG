@@ -7,7 +7,7 @@
 
 EnemyManager::EnemyManager(Node* scene)
 {
-    
+
 	spawnTimer = 5.0f;
 	currentSpawnTimer = spawnTimer;
 	waveSpawned = false;
@@ -20,28 +20,41 @@ EnemyManager::EnemyManager(Node* scene)
 
 	//Start of reading file
 	std::ifstream file;
-    
-	//For CSV File
-    file.open(FileUtils::sharedFileUtils()->fullPathForFilename("Levels/Level1.csv"));
-    std::printf("mao ni\n");
 
-    
+	
+
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+	ssize_t size = 0;
+	auto data = FileUtils::getInstance()->getFileData("Levels/Level1.csv", "rb", &size);
+
+	vector<int> enemyPatternY;
+	for(ssize_t i = 0; i < size; ++i)
+	{
+		if (data[i] != ',' && (int)data[i] != 13 && (int)data[i] != 10)
+		{
+			enemyPatternY.push_back(data[i] - '0');
+			CCLOG("DATA: %i", data[i] - '0');
+		}
+		else if ((int)data[i] == 13)
+		{
+			enemyPattern.push_back(enemyPatternY);
+			enemyPatternY.clear();
+		}
+	}
+#else
+	file.open(FileUtils::sharedFileUtils()->fullPathForFilename("Levels/Level1.csv"));
+
 	//For Text File
-	//file.open("Levels\\Level1.txt");
 	while (file)
 	{
 		vector<int> enemyPatternY;
 		
-        std::printf("ni mao\n");
-        
 		//For CSV File
 		std::getline(file, line,'\r');
         
         if (line.size() == 0)
             break;
         
-        
-		
 		//For Text File
 		//std::getline(file, line);
 		
@@ -57,6 +70,7 @@ EnemyManager::EnemyManager(Node* scene)
 		//push in the Y pattern into X pattern
 		enemyPattern.push_back(enemyPatternY);
 	}
+#endif
 
 	for (int i = 0; i < 35; i++)
 	{

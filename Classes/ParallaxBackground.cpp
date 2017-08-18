@@ -4,7 +4,7 @@
 
 using namespace cocos2d;
 
-#define BACKGROUND_PATH "background/"
+#define BACKGROUND_PATH "Background/"
 
 ParallaxBackground::ParallaxBackground()
 {
