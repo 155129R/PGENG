@@ -59,7 +59,8 @@ void SceneManager::runSceneWithType(const SceneType sceneType)
 	}
 	else
 	{
-		CCDirector::getInstance()->replaceScene(TransitionSlideInT::create(1.5f, sceneToRun));
+		CCDirector::getInstance()->replaceScene(TransitionFade::create(1.5f, sceneToRun));
+		//CCDirector::getInstance()->replaceScene(TransitionSlideInT::create(1.5f, sceneToRun));
 	}
 }
 

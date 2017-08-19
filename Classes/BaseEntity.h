@@ -34,4 +34,6 @@ public:
 
 	virtual Sprite* getSprite(void) { return m_mainSprite; }
 	virtual Vec2 getPosition() { return m_mainSprite->getPosition(); }
+
+	inline void SetScale(float scale){ m_mainSprite->setScale(scale); }
 };

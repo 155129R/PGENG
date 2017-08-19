@@ -8,6 +8,7 @@
 #include "EnemyManager.h"
 #include "cocos2d.h"
 #include "ui/UIImageView.h"
+#include "ui/UIButton.h"
 
 using namespace cocos2d;
 
@@ -16,13 +17,19 @@ class Projectile;
 class GameScene : public cocos2d::Layer
 {
 public:
+	typedef enum GAME_STATE
+	{
+		RUN,
+		PAUSE,
+		DEFEAT,
+	};
+
 	// a selector callback
 	void menuCloseCallback(cocos2d::Ref* pSender);
 
 	static cocos2d::Scene* createScene();
 	virtual bool init();
 	
-	//Temporary until Input for touch is in
 	virtual void onKeyPressed(EventKeyboard::KeyCode, Event*);
 	virtual void onKeyReleased(EventKeyboard::KeyCode, Event*);
 
@@ -38,12 +45,6 @@ public:
 	ParticleExplosion* m_explosionEmitter;
 	std::vector<ui::ImageView*> ImageList;
 private:
-	typedef enum GAME_STATE
-	{
-		RUN,
-		PAUSE,
-		DEFEAT,
-	};
 
 	GLProgram *proPostProcess;
 	InputHandler input;
@@ -67,7 +68,14 @@ private:
 	//for getting window screen
 	Size playingSize;
 
+	Sprite* blackBg;
+	Label *finalScore;
+	ui::Button* resumeButton;
+	ui::Button* quitButton;
+	ui::Button* shareButton;
+
 	void InitTouch();
+	void InitButtons();
 
 	int GetNumberOfUIHearts();
 	void AddUIHeart();

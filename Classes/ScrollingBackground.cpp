@@ -138,9 +138,10 @@ void ScrollingBackground::RescaleSpriteBuffer(int index)
 		return;
 	}
 
-	float imageHeight = buffers[index]->getContentSize().height;
-	float scaleFactor = screenHeight / imageHeight;
-	buffers[index]->setScale(scaleFactor);
+	Size imageSize = buffers[index]->getContentSize();
+	float scaleHeight = screenHeight / imageSize.height;
+	float scaleWidth = screenWidth / imageSize.width;
+	buffers[index]->setScale(scaleWidth, scaleHeight);
 }
 
 void ScrollingBackground::SetBackground(Texture2D* texture, int index)
@@ -154,5 +155,5 @@ void ScrollingBackground::SetBackground(Texture2D* texture, int index)
 	rect.size = texture->getContentSize();
 
 	buffers[index]->setTextureRect(rect);
-	buffers[index]->setScale(screenHeight / rect.size.height);
+	RescaleSpriteBuffer(index);
 }

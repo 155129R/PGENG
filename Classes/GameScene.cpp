@@ -66,12 +66,12 @@ bool GameScene::init()
 	playerNode->setPosition(0, 0);
 	this->addChild(playerNode, 1);
 
-	mainChar.Init("PlayerIdle/idle1.png", "Player", 80, 150);
+	mainChar.Init("PlayerIdle/idle1.png", "Player", 80, 160);
+	mainChar.SetScale(1.5f);
 	playerNode->addChild(mainChar.getSprite(), 1);
 
 	// Input control setup
 	input.BindCommandAndKey(Input_Game::USE_WEAPON, new TemplateAction<BaseWeapon>(mainChar.getWeapon(), &BaseWeapon::use, Input_Action::PRESSED), (int)EventKeyboard::KeyCode::KEY_SPACE);
-	//input.BindCommandAndKey(Input_Game::USE_WEAPON, new TemplateAction<BaseWeapon>(mainChar.getWeapon(), &BaseWeapon::use, Input_Action::PRESSED), (int)EventTouch::);
 
 	// Load background
 	parallaxBackground.Init(visibleSize.width, visibleSize.height);
@@ -80,8 +80,7 @@ bool GameScene::init()
 	parallaxBackground.SetFadeTime(0.15f);
 
 	parallaxBackground.AddBackground("hills", 5);
-	parallaxBackground.AddBackground("town", 8);
-	parallaxBackground.ChangeBackground("town");
+	parallaxBackground.ChangeBackground("hills");
 
 	//Projectile Pool SHOULD BE IN CHARACTER CLASS
 	for (int a = 1; a < 4; a++)
@@ -124,13 +123,27 @@ bool GameScene::init()
 	this->addChild(text);
 	text->setPositionZ(5.f);
 
+	finalScore = Label::createWithTTF(ss.str(), "batman.ttf", 100.f);
+	finalScore->setColor(Color3B(255, 255, 255));
+	finalScore->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.55f));
+	finalScore->setVisible(false);
+	this->addChild(finalScore, 3);
+
+
 	//Lose Text
 	loseText = Label::createWithTTF("You Lose", "batman.ttf", 200.f);
-	loseText->setColor(Color3B(0.f, 0.f, 0.f));
-	loseText->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.5f));
-	this->addChild(loseText);
+	loseText->setColor(Color3B(255, 255, 255));
+	loseText->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.8f));
+	this->addChild(loseText, 3);
 	loseText->setVisible(false);
 	loseText->setPositionZ(5.f);
+
+	blackBg = Sprite::create("Background/black.png");
+	blackBg->setAnchorPoint(Vec2(0.f, 0.f));
+	blackBg->setPosition(Vec2(0.0f, 0.0f));
+	blackBg->setOpacity(200);
+	this->addChild(blackBg, 2);
+	blackBg->setVisible(false);
 
 	m_explosionEmitter->pauseEmissions();
 
@@ -138,6 +151,7 @@ bool GameScene::init()
 	audio->playBackgroundMusic("Sounds/MotifLoop.mp3", true);
 
 	InitTouch();
+	InitButtons();
 
 	this->scheduleUpdate();
 	return true;
@@ -153,6 +167,74 @@ void GameScene::InitTouch()
 	touchListener->onTouchCancelled = CC_CALLBACK_2(GameScene::onTouchCancelled, this);
 
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
+}
+
+void GameScene::InitButtons()
+{
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	auto button = ui::Button::create("ui/settings-icon.png");
+	button->setPosition(Vec2(visibleSize.width * 0.96f, visibleSize.height * 0.94f));
+	button->setScale(0.2f);
+	button->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
+	{
+		if (type == ui::Widget::TouchEventType::ENDED)
+		{
+			gameState = GAME_STATE::PAUSE;
+			blackBg->setVisible(true);
+			resumeButton->setVisible(true);
+			resumeButton->setEnabled(true);
+			quitButton->setVisible(true);
+			quitButton->setEnabled(true);
+		}
+	});
+	this->addChild(button);
+
+	resumeButton = ui::Button::create("ui/resume-normal.png", "ui/resume-selected.png");
+	resumeButton->setPosition(Vec2(visibleSize.width * 0.41f, visibleSize.height * 0.6f));
+	resumeButton->setScale(1.5f);
+	resumeButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
+	{
+		if (type == ui::Widget::TouchEventType::ENDED)
+		{
+			gameState = GAME_STATE::RUN;
+			blackBg->setVisible(false);
+			resumeButton->setVisible(false);
+			resumeButton->setEnabled(false);
+			quitButton->setVisible(false);
+			quitButton->setEnabled(false);
+		}
+	});
+	resumeButton->setEnabled(false);
+	resumeButton->setVisible(false);
+	this->addChild(resumeButton, 4);
+
+	quitButton = ui::Button::create("ui/quit-normal.png", "ui/quit-selected.png");
+	quitButton->setPosition(Vec2(visibleSize.width * 0.41f, visibleSize.height * 0.4f));
+	quitButton->setScale(1.5f);
+	quitButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
+	{
+		if (type == ui::Widget::TouchEventType::ENDED)
+		{
+			SceneManager::getInstance().runSceneWithType(CONSTANTS::SceneType::MAINMENU);
+		}
+	});
+	quitButton->setEnabled(false);
+	quitButton->setVisible(false);
+	this->addChild(quitButton, 3);
+
+	shareButton = ui::Button::create("ui/share-normal.png", "ui/share-selected.png");
+	shareButton->setPosition(Vec2(visibleSize.width * 0.41f, visibleSize.height * 0.35f));
+	shareButton->setScale(1.5f);
+	shareButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
+	{
+		if (type == ui::Widget::TouchEventType::ENDED)
+		{
+			// TODO: Put your share codes here
+		}
+	});
+	shareButton->setEnabled(false);
+	shareButton->setVisible(false);
+	this->addChild(shareButton, 3);
 }
 
 void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
@@ -173,7 +255,7 @@ void GameScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)
 bool GameScene::onTouchBegan(Touch* _touch, Event* _event)
 {
 	mainChar.getWeapon()->use();
-    parallaxBackground.TransitionBackground("hills");
+
 	return true;
 }
 
@@ -182,10 +264,23 @@ void GameScene::update(float _delta)
 	if (gameState == GAME_STATE::DEFEAT || gameState == GAME_STATE::PAUSE)
 		return;
 
-	if (mainChar.isDead())
+	if (mainChar.isDead() && gameState != GAME_STATE::DEFEAT)
 	{
 		gameState = GAME_STATE::DEFEAT;
 		loseText->setVisible(true);
+		shareButton->setVisible(true);
+		shareButton->setEnabled(true);
+		blackBg->setVisible(true);
+
+		auto visibleSize = Director::getInstance()->getVisibleSize();
+		quitButton->setVisible(true);
+		quitButton->setEnabled(true);
+		quitButton->setPosition(Vec2(visibleSize.width * 0.41f, visibleSize.height * 0.2f));
+
+		std::stringstream ss;
+		ss << "Score: " << mainChar.score;
+		finalScore->setString(ss.str());
+		finalScore->setVisible(true);
 	}
 	input.RunCommands();
 
