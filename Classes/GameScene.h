@@ -5,7 +5,7 @@
 #include "Enemy.h"
 #include "InputHandler.h"
 #include "ParallaxBackground.h"
-#include "EnemyManager.h"
+#include "GameManager.h"
 #include "cocos2d.h"
 #include "ui/UIImageView.h"
 #include "ui/UIButton.h"
@@ -52,7 +52,7 @@ private:
 	Label *text;
 	Label *loseText;
 
-	EnemyManager* enemyManager;
+	GameManager* gameManager;
 
 	GAME_STATE gameState;
 

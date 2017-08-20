@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseEntity.h"
+#include "FeedBack.h"
 
 class Enemy : public BaseEntity
 {
@@ -10,7 +11,7 @@ class Enemy : public BaseEntity
 
 	public:
 		void Init(const char*, const char*, float, float, float);
-		void Update(float, BaseEntity*);
+		void Update(float, BaseEntity*, FeedBack*);
 
 
 };

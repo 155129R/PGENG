@@ -1,11 +1,11 @@
-#include "EnemyManager.h"
+#include "GameManager.h"
 
 #include <sstream>
 #include <fstream>
 
 #include "PowerUp.h"
 
-EnemyManager::EnemyManager(Node* scene)
+GameManager::GameManager(Node* scene)
 {
 
 	spawnTimer = 5.0f;
@@ -72,6 +72,45 @@ EnemyManager::EnemyManager(Node* scene)
 	}
 #endif
 
+	warningSpawned = false;
+	for (int i = 0; i < 9; i++)
+	{
+
+		//Warning Sign for enemy and node creation
+		auto warningNode = Node::create();
+		warningNode->setName("warningNode");
+		warningNode->setPosition(0, 0);
+		scene->addChild(warningNode, 1);
+
+		WarningSign* newWarning = new WarningSign();
+		newWarning->Init("Signs/warning.png", "WarningSign", 0, 0);
+		newWarning->SetType(WarningSign::WarningType::ENEMEY);
+		warningNode->addChild(newWarning->getSprite(), 1);
+		newWarning->SetSpeed(0);
+		newWarning->SetDirection(0);
+		newWarning->SetAlive(false);
+		newWarning->getSprite()->setVisible(false);
+
+		warningPool.push_back(newWarning);
+
+		//Warning Sign for powerup and node creation
+		auto warningNode2 = Node::create();
+		warningNode2->setName("warningNode");
+		warningNode2->setPosition(0, 0);
+		scene->addChild(warningNode2, 1);
+
+		WarningSign* newWarning2 = new WarningSign();
+		newWarning2->Init("Signs/powerup.png", "WarningSign", 0, 0);
+		newWarning2->SetType(WarningSign::WarningType::POWERUP);
+		warningNode2->addChild(newWarning2->getSprite(), 1);
+		newWarning2->SetSpeed(0);
+		newWarning2->SetDirection(0);
+		newWarning2->SetAlive(false);
+		newWarning2->getSprite()->setVisible(false);
+
+		warningPool.push_back(newWarning2);
+	}
+
 	for (int i = 0; i < 35; i++)
 	{
 		auto enemyNode = Node::create();
@@ -107,21 +146,33 @@ EnemyManager::EnemyManager(Node* scene)
 
 		powerPool.push_back(newPower);
 	}
+	auto feedBackNode = Node::create();
+	feedBackNode->setName("feedBackNode");
+	feedBackNode->setPosition(10, 0);
+	scene->addChild(feedBackNode, 1);
+
+	playerFeedBack = new FeedBack();
+	playerFeedBack->Init("Heal/Heal1.png", "FeedBack", 0, 0);
+	feedBackNode->addChild(playerFeedBack->getSprite(), 1);
+	playerFeedBack->SetSpeed(0);
+	playerFeedBack->SetDirection(0);
+	playerFeedBack->SetAlive(true);
+	playerFeedBack->getSprite()->setVisible(false);
 }
 
-EnemyManager::~EnemyManager()
+GameManager::~GameManager()
 {
 
 }
 
 
-const char* EnemyManager::getPathForFile(string fileName)
+const char* GameManager::getPathForFile(string fileName)
 {
 	string path = FileUtils::sharedFileUtils()->getWritablePath() + "//" + fileName;
 	return path.c_str();
 }
 
-void EnemyManager::SpawnEnemy(float x, float y)
+void GameManager::SpawnEnemy(float x, float y)
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	groundOffset = visibleSize.height / 7.1467;
@@ -148,7 +199,7 @@ void EnemyManager::SpawnEnemy(float x, float y)
 	}
 }
 
-void EnemyManager::SpawnPowerUp(float x, float y)
+void GameManager::SpawnPowerUp(float x, float y)
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	groundOffset = visibleSize.height / 7.1467;
@@ -175,8 +226,40 @@ void EnemyManager::SpawnPowerUp(float x, float y)
 	}
 }
 
+void GameManager::SpawnWarningSign(float x, float y, WarningSign::WarningType type)
+{
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	groundOffset = visibleSize.height / 7.1467;
+	float offset = groundOffset / 4;
 
-void EnemyManager::Update(double dt, BaseEntity* character)
+	//Minus 64 because of the sprite image is 64x64
+	float posX = visibleSize.width - 64.0f;
+
+	//(visibleSize.height - groundOffset) is the distance between the ground and the top of the screen
+	//(visibleSize.height - groundOffset) / 9 is the distance per round for the enemy
+	//(9 - y) is to invert the 0 to 9 and 9 to 0 multiply
+	float posY = groundOffset + (((visibleSize.height - groundOffset) / 9) * (9 - y) - (visibleSize.height - groundOffset) / 9);
+
+	if (y == 9)
+		posY = visibleSize.height - 100;
+
+	for (auto warning : warningPool)
+	{
+		if (!warning->GetAlive() && warning->GetType() == type)
+		{
+			warning->SetAlive(true);
+			warning->getSprite()->setPosition(posX, posY + offset);
+			break;
+		}
+	}
+}
+
+FeedBack* GameManager::GetFeedBack()
+{
+	return playerFeedBack;
+}
+
+void GameManager::Update(double dt, BaseEntity* character)
 {
     currentSpawnTimer -= dt;
     if (currentSpawnTimer <= 0.0f)
@@ -202,7 +285,33 @@ void EnemyManager::Update(double dt, BaseEntity* character)
             waveNumber = 0;
             enemySpeed += 2.5f;
         }
+
+		warningSpawned = false;
+		waveSpawned = false;
+		for (auto warning : warningPool)
+			if (warning->GetAlive())
+				warning->SetAlive(false);
     }
+	if (currentSpawnTimer <= 3.0f && currentSpawnTimer > 0.0f && !warningSpawned)
+	{
+		for (int x = waveNumber; x < enemyPattern.at(0).size(); x++)
+		{
+			for (int y = 0; y < enemyPattern.size() - 1; y++)
+			{
+				if (enemyPattern[y][x] == 1)
+				{
+					SpawnWarningSign(1, y, WarningSign::WarningType::ENEMEY);
+					warningSpawned = true;
+				}
+				if (enemyPattern[y][x] == 2)
+				{
+					SpawnWarningSign(1, y, WarningSign::WarningType::POWERUP);
+					warningSpawned = true;
+				}
+			}
+			break;
+		}
+	}
     /*
 	if (!waveSpawned)
 	{
@@ -275,9 +384,14 @@ f
 
 	for (auto enemy : enemyPool)
 		if (enemy->GetAlive())
-			enemy->Update(dt, character);
+			enemy->Update(dt, character, playerFeedBack);
 
 	for (auto power : powerPool)
 		if (power->GetAlive())
-			power->Update(dt, character);
+			power->Update(dt, character, playerFeedBack);
+	
+	playerFeedBack->Update(dt, character);
+
+	for (auto warning : warningPool)
+		warning->Update(dt);
 }

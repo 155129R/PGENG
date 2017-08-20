@@ -152,7 +152,9 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\BaseEntity.cpp" />
     <ClCompile Include="..\Classes\Character.cpp" />
     <ClCompile Include="..\Classes\Enemy.cpp" />
-    <ClCompile Include="..\Classes\EnemyManager.cpp" />
+    <ClCompile Include="..\Classes\FeedBack.cpp" />
+    <ClCompile Include="..\Classes\FeedBackManager.cpp" />
+    <ClCompile Include="..\Classes\GameManager.cpp" />
     <ClCompile Include="..\Classes\GameScene.cpp" />
     <ClCompile Include="..\Classes\InputHandler.cpp" />
     <ClCompile Include="..\Classes\MainmenuScene.cpp" />
@@ -164,6 +166,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\SceneManager.cpp" />
     <ClCompile Include="..\Classes\ScrollingBackground.cpp" />
     <ClCompile Include="..\Classes\SettingScene.cpp" />
+    <ClCompile Include="..\Classes\WarningSign.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -176,7 +179,9 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Command.h" />
     <ClInclude Include="..\Classes\Constants.h" />
     <ClInclude Include="..\Classes\Enemy.h" />
-    <ClInclude Include="..\Classes\EnemyManager.h" />
+    <ClInclude Include="..\Classes\FeedBack.h" />
+    <ClInclude Include="..\Classes\FeedBackManager.h" />
+    <ClInclude Include="..\Classes\GameManager.h" />
     <ClInclude Include="..\Classes\GameScene.h" />
     <ClInclude Include="..\Classes\InputCommandBase.h" />
     <ClInclude Include="..\Classes\InputConstant.h" />
@@ -192,6 +197,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\SettingScene.h" />
     <ClInclude Include="..\Classes\StateCommand.h" />
     <ClInclude Include="..\Classes\TemplateAction.h" />
+    <ClInclude Include="..\Classes\WarningSign.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>

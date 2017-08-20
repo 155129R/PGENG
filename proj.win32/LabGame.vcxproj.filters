@@ -70,9 +70,6 @@
     <ClCompile Include="..\Classes\InputHandler.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\EnemyManager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Missile.cpp">
       <Filter>Projectile</Filter>
     </ClCompile>
@@ -93,6 +90,18 @@
     </ClCompile>
     <ClCompile Include="..\Classes\SettingScene.cpp">
       <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\FeedBack.cpp">
+      <Filter>BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\WarningSign.cpp">
+      <Filter>BaseEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\FeedBackManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameManager.cpp">
+      <Filter>Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -145,9 +154,6 @@
     <ClInclude Include="..\Classes\InputHandler.h">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\EnemyManager.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Missile.h">
       <Filter>Projectile</Filter>
     </ClInclude>
@@ -171,6 +177,18 @@
     </ClInclude>
     <ClInclude Include="..\Classes\SettingScene.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FeedBack.h">
+      <Filter>BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\WarningSign.h">
+      <Filter>BaseEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FeedBackManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\GameManager.h">
+      <Filter>Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -28,7 +28,7 @@ void PowerUp::Init(const char* _srcImg, const char* _name, float _x, float _y)
 	isAlive = true;
 }
 
-void PowerUp::Update(float _delta, BaseEntity* character)
+void PowerUp::Update(float _delta, BaseEntity* character, FeedBack* feedback)
 {
 	if (isAlive && character->GetAlive())
 	{
@@ -43,6 +43,7 @@ void PowerUp::Update(float _delta, BaseEntity* character)
 			{
 				player->Heal();
 				isAlive = false;
+				feedback->playerHeal();
 				m_mainSprite->setVisible(false);
 			}
 		}

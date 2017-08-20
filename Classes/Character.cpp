@@ -1,12 +1,13 @@
 #include "Character.h"
 #include "Rocket.h"
-
+#include "SceneManager.h"
+#include "GameScene.h"
 
 Character::Character()
 {
 	fncStates[CHARACTER_STATE::RUNNING] = &Character::Running;
 	fncStates[CHARACTER_STATE::JUMPING] = &Character::Jumping;
-	fncStates[CHARACTER_STATE::DEATH] = &Character::Death;
+	//fncStates[CHARACTER_STATE::DEATH] = &Character::Death;
 }
 
 Character::~Character()
@@ -79,9 +80,18 @@ void Character::Jumping(float _deltaTime)
 	}
 }
 
-void Character::Death(float _deltaTime)
+void Character::Death()
 {
+	Scene* scene = (CCDirector::getInstance()->getRunningScene());
+	Node* node = scene->getChildByTag((int)SceneType::GAMEPLAY);
+	GameScene* game = dynamic_cast<GameScene*>(node);
 
+	game->m_explosionEmitter->setVisible(true);
+	game->m_explosionEmitter->resetSystem();
+	game->m_explosionEmitter->setPosition(this->getPosition());
+	game->m_explosionEmitter->resumeEmissions();
+
+	m_mainSprite->setVisible(false);
 }
 
 void Character::Invulerable(float dt)
@@ -89,13 +99,13 @@ void Character::Invulerable(float dt)
 	if (invulFlag)
 	{
 		invulTimer -= dt;
-		visible = !visible;
-		m_mainSprite->setVisible(visible);
+		//visible = !visible;
+		//m_mainSprite->setVisible(visible);
 
 		if (invulTimer < 0)
 		{
-			visible = true;
-			m_mainSprite->setVisible(visible);
+			//visible = true;
+			//m_mainSprite->setVisible(visible);
 			invulTimer = invulDuration;
 			invulFlag = false;
 		}

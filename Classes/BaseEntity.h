@@ -19,6 +19,8 @@ public:
 		CHARACTER,
 		ENEMY,
 		POWERUP_LIFE,
+		WARNINGSIGN,
+		FEEDBACK,
 		MAX
 	}entityType;
 

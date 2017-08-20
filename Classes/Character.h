@@ -37,7 +37,7 @@ private:
 	void(Character::*fncStates[CHARACTER_STATE::MAX])(float);
 	void Running(float _deltaTime);
 	void Jumping(float _deltaTime);
-	void Death(float _deltaTime);
+
 
 	bool invulFlag;
 	float invulTimer;
@@ -54,7 +54,7 @@ public:
 	void Jump();
 	void Invulerable(float dt);
 	void Heal();
-
+	void Death();
 
 	CHARACTER_STATE getCharacterState();
 	

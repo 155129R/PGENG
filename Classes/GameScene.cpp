@@ -86,7 +86,7 @@ bool GameScene::init()
 		projectileList.push_back(newMissile);
 	}
 
-	enemyManager = new EnemyManager(this);
+	gameManager = new GameManager(this);
 
 	spawnTimer = (float)(cocos2d::RandomHelper::random_int(5, 5));
 	tempRandom = 0;
@@ -413,6 +413,7 @@ void GameScene::update(float _delta)
 	{
 		gameState = GAME_STATE::DEFEAT;
 		loseText->setVisible(true);
+		mainChar.Death();
 		shareButton->setVisible(true);
 		shareButton->setEnabled(true);
 		blackBg->setVisible(true);
@@ -436,7 +437,7 @@ void GameScene::update(float _delta)
 	mainChar.Update(_delta);
 	parallaxBackground.Update(_delta);
 	
-	enemyManager->Update(_delta, &mainChar);
+	gameManager->Update(_delta, &mainChar);
 
 	if (GetNumberOfUIHearts() < mainChar.GetHealth())
 		AddUIHeart();
