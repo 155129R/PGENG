@@ -74,8 +74,13 @@ private:
 	ui::Button* quitButton;
 	ui::Button* shareButton;
 
+	void InitAndroid();
+	void InitButtonsForAndroid();
+
+	void InitIOS();
+	void InitButtonsForIOS();
+
 	void InitTouch();
-	void InitButtons();
 
 	int GetNumberOfUIHearts();
 	void AddUIHeart();

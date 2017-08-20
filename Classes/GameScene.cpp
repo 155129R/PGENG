@@ -20,8 +20,11 @@ Scene* GameScene::createScene()
 	layer->setTag((int)SceneType::GAMEPLAY);
 
 	PhysicsWorld* world = scene->getPhysicsWorld();
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+	world->setGravity(Vec2(0.f, -1500.f));
+#else
 	world->setGravity(Vec2(0.f, -1000.f));
-
+#endif
 	// add layer as a child to scene
 	scene->addChild(layer);
 
@@ -39,6 +42,12 @@ bool GameScene::init()
 		return false;
 	}
 
+#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+	InitIOS();
+#else
+	InitAndroid();
+#endif
+	
 	gameState = GAME_STATE::RUN;
 
 	auto visibleSize = Director::getInstance()->getVisibleSize();
@@ -46,29 +55,11 @@ bool GameScene::init()
 
 	// Screen size
 	playingSize = Size(visibleSize.width, visibleSize.height - (visibleSize.height / 8));
-	
-	// Halved of screen height
-	float halvedHeight = playingSize.height * .5f;
 
 	auto listener = EventListenerKeyboard::create();
 	listener->onKeyPressed = CC_CALLBACK_2(GameScene::onKeyPressed, this);
 	listener->onKeyReleased = CC_CALLBACK_2(GameScene::onKeyReleased, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
-
-	// Node for items
-	auto nodeItems = Node::create();
-	nodeItems->setName("nodeItems");
-	nodeItems->setPosition(0, halvedHeight);
-	this->addChild(nodeItems, 1);
-
-	auto playerNode = Node::create();
-	playerNode->setName("playerNode");
-	playerNode->setPosition(0, 0);
-	this->addChild(playerNode, 1);
-
-	mainChar.Init("PlayerIdle/idle1.png", "Player", 80, 160);
-	mainChar.SetScale(1.5f);
-	playerNode->addChild(mainChar.getSprite(), 1);
 
 	// Input control setup
 	input.BindCommandAndKey(Input_Game::USE_WEAPON, new TemplateAction<BaseWeapon>(mainChar.getWeapon(), &BaseWeapon::use, Input_Action::PRESSED), (int)EventKeyboard::KeyCode::KEY_SPACE);
@@ -103,14 +94,46 @@ bool GameScene::init()
 	
 	m_explosionEmitter = ParticleExplosion::create();
 	m_explosionEmitter->setVisible(false);
+	m_explosionEmitter->pauseEmissions();
 	this->addChild(m_explosionEmitter, 1);
+
+	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
+	audio->playBackgroundMusic("Sounds/MotifLoop.mp3", true);
+
+	InitTouch();
+	this->scheduleUpdate();
+	return true;
+}
+
+void GameScene::InitAndroid()
+{
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	CCLOG("Visible Size: %f, %f", visibleSize.width, visibleSize.height);
+
+	// Halved of screen height
+	float halvedHeight = playingSize.height * .5f;
+
+	// Node for items
+	auto nodeItems = Node::create();
+	nodeItems->setName("nodeItems");
+	nodeItems->setPosition(0, halvedHeight);
+	this->addChild(nodeItems, 1);
+
+	auto playerNode = Node::create();
+	playerNode->setName("playerNode");
+	playerNode->setPosition(0, 0);
+	this->addChild(playerNode, 1);
+
+	mainChar.Init("PlayerIdle/idle1.png", "Player", 80, 160);
+	mainChar.SetScale(1.5f);
+	playerNode->addChild(mainChar.getSprite(), 1);
 
 	//Lives UI
 	for (int i = 0; i < mainChar.GetHits(); i++)
 	{
 		auto imageView = ui::ImageView::create("heart.png");
 		imageView->setPosition(Vec2(visibleSize.width * 0.10f + (10.f * i), visibleSize.height * 0.95f));
-		this->addChild(imageView);
+		this->addChild(imageView, 2);
 		ImageList.push_back(imageView);
 	}
 
@@ -145,31 +168,11 @@ bool GameScene::init()
 	this->addChild(blackBg, 2);
 	blackBg->setVisible(false);
 
-	m_explosionEmitter->pauseEmissions();
-
-	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
-	audio->playBackgroundMusic("Sounds/MotifLoop.mp3", true);
-
-	InitTouch();
-	InitButtons();
-
-	this->scheduleUpdate();
-	return true;
+	InitButtonsForAndroid();
 }
 
-void GameScene::InitTouch()
-{
-	auto touchListener = EventListenerTouchOneByOne::create();
 
-	touchListener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
-	touchListener->onTouchEnded = CC_CALLBACK_2(GameScene::onTouchEnded, this);
-	touchListener->onTouchMoved = CC_CALLBACK_2(GameScene::onTouchMoved, this);
-	touchListener->onTouchCancelled = CC_CALLBACK_2(GameScene::onTouchCancelled, this);
-
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
-}
-
-void GameScene::InitButtons()
+void GameScene::InitButtonsForAndroid()
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto button = ui::Button::create("ui/settings-icon.png");
@@ -187,7 +190,7 @@ void GameScene::InitButtons()
 			quitButton->setEnabled(true);
 		}
 	});
-	this->addChild(button);
+	this->addChild(button, 2);
 
 	resumeButton = ui::Button::create("ui/resume-normal.png", "ui/resume-selected.png");
 	resumeButton->setPosition(Vec2(visibleSize.width * 0.41f, visibleSize.height * 0.6f));
@@ -220,7 +223,7 @@ void GameScene::InitButtons()
 	});
 	quitButton->setEnabled(false);
 	quitButton->setVisible(false);
-	this->addChild(quitButton, 3);
+	this->addChild(quitButton, 4);
 
 	shareButton = ui::Button::create("ui/share-normal.png", "ui/share-selected.png");
 	shareButton->setPosition(Vec2(visibleSize.width * 0.41f, visibleSize.height * 0.35f));
@@ -234,7 +237,149 @@ void GameScene::InitButtons()
 	});
 	shareButton->setEnabled(false);
 	shareButton->setVisible(false);
-	this->addChild(shareButton, 3);
+	this->addChild(shareButton, 4);
+}
+
+void GameScene::InitIOS()
+{
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+
+	// Halved of screen height
+	float halvedHeight = playingSize.height * .5f;
+
+	// Node for items
+	auto nodeItems = Node::create();
+	nodeItems->setName("nodeItems");
+	nodeItems->setPosition(0, halvedHeight);
+	this->addChild(nodeItems, 1);
+
+	auto playerNode = Node::create();
+	playerNode->setName("playerNode");
+	playerNode->setPosition(0, 0);
+	this->addChild(playerNode, 1);
+
+	mainChar.Init("PlayerIdle/idle1.png", "Player", 80, 120);
+	mainChar.SetScale(1.f);
+	playerNode->addChild(mainChar.getSprite(), 1);
+
+	//Lives UI
+	for (int i = 0; i < mainChar.GetHits(); i++)
+	{
+		auto imageView = ui::ImageView::create("heart.png");
+		imageView->setPosition(Vec2(visibleSize.width * 0.10f + (10.f * i), visibleSize.height * 0.95f));
+		this->addChild(imageView, 2);
+		ImageList.push_back(imageView);
+	}
+
+	//Score UI
+	std::stringstream ss;
+	ss << mainChar.score;
+	text = Label::createWithTTF(ss.str(), "batman.ttf", 50.f);
+	text->setColor(Color3B(0.f, 0.f, 0.f));
+	text->setPosition(Vec2(visibleSize.width * 0.05f, visibleSize.height * 0.95f));
+	this->addChild(text, 2);
+	text->setPositionZ(5.f);
+
+	finalScore = Label::createWithTTF(ss.str(), "batman.ttf", 50.f);
+	finalScore->setColor(Color3B(255, 255, 255));
+	finalScore->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.55f));
+	finalScore->setVisible(false);
+	this->addChild(finalScore, 4);
+
+
+	//Lose Text
+	loseText = Label::createWithTTF("You Lose", "batman.ttf", 100.f);
+	loseText->setColor(Color3B(255, 255, 255));
+	loseText->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.8f));
+	this->addChild(loseText, 4);
+	loseText->setVisible(false);
+	loseText->setPositionZ(5.f);
+
+	blackBg = Sprite::create("Background/black.png");
+	blackBg->setAnchorPoint(Vec2(0.f, 0.f));
+	blackBg->setPosition(Vec2(0.0f, 0.0f));
+	blackBg->setOpacity(200);
+	this->addChild(blackBg, 3);
+	blackBg->setVisible(false);
+
+	InitButtonsForIOS();
+}
+
+void GameScene::InitButtonsForIOS()
+{
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	auto button = ui::Button::create("ui/settings-icon.png");
+	button->setPosition(Vec2(visibleSize.width * 0.96f, visibleSize.height * 0.94f));
+	button->setScale(0.1f);
+	button->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
+	{
+		if (type == ui::Widget::TouchEventType::ENDED)
+		{
+			gameState = GAME_STATE::PAUSE;
+			blackBg->setVisible(true);
+			resumeButton->setVisible(true);
+			resumeButton->setEnabled(true);
+			quitButton->setVisible(true);
+			quitButton->setEnabled(true);
+		}
+	});
+	this->addChild(button, 2);
+
+	resumeButton = ui::Button::create("ui/resume-normal.png", "ui/resume-selected.png");
+	resumeButton->setPosition(Vec2(visibleSize.width * 0.41f, visibleSize.height * 0.6f));
+	resumeButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
+	{
+		if (type == ui::Widget::TouchEventType::ENDED)
+		{
+			gameState = GAME_STATE::RUN;
+			blackBg->setVisible(false);
+			resumeButton->setVisible(false);
+			resumeButton->setEnabled(false);
+			quitButton->setVisible(false);
+			quitButton->setEnabled(false);
+		}
+	});
+	resumeButton->setEnabled(false);
+	resumeButton->setVisible(false);
+	this->addChild(resumeButton, 4);
+
+	quitButton = ui::Button::create("ui/quit-normal.png", "ui/quit-selected.png");
+	quitButton->setPosition(Vec2(visibleSize.width * 0.41f, visibleSize.height * 0.4f));
+	quitButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
+	{
+		if (type == ui::Widget::TouchEventType::ENDED)
+		{
+			SceneManager::getInstance().runSceneWithType(CONSTANTS::SceneType::MAINMENU);
+		}
+	});
+	quitButton->setEnabled(false);
+	quitButton->setVisible(false);
+	this->addChild(quitButton, 4);
+
+	shareButton = ui::Button::create("ui/share-normal.png", "ui/share-selected.png");
+	shareButton->setPosition(Vec2(visibleSize.width * 0.41f, visibleSize.height * 0.35f));
+	shareButton->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
+	{
+		if (type == ui::Widget::TouchEventType::ENDED)
+		{
+			// TODO: Put your share codes here
+		}
+	});
+	shareButton->setEnabled(false);
+	shareButton->setVisible(false);
+	this->addChild(shareButton, 4);
+}
+
+void GameScene::InitTouch()
+{
+	auto touchListener = EventListenerTouchOneByOne::create();
+
+	touchListener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
+	touchListener->onTouchEnded = CC_CALLBACK_2(GameScene::onTouchEnded, this);
+	touchListener->onTouchMoved = CC_CALLBACK_2(GameScene::onTouchMoved, this);
+	touchListener->onTouchCancelled = CC_CALLBACK_2(GameScene::onTouchCancelled, this);
+
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
 }
 
 void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)

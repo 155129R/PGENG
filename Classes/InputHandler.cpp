@@ -95,6 +95,8 @@ void InputHandler::DecipherKeyPressed()
 						break;
 					case Input_Type::RANGE:
 						break;
+					default:
+						break;
 					}
 					
 					commIt++;
@@ -138,6 +140,8 @@ void InputHandler::DecipherKeyReleased()
 						break;
 					case Input_Type::RANGE:
 						break;
+					default: 
+						break;
 					}
 					commIt++;
 				}
@@ -175,6 +179,7 @@ std::vector<int>::iterator InputHandler::CheckKeyExistInVector(std::vector<int> 
 	{
 		if (*it == key)
 			return it;
+		it++;
 	}
 	return binds.end();
 }
