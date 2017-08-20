@@ -21,7 +21,7 @@ Scene* GameScene::createScene()
 
 	PhysicsWorld* world = scene->getPhysicsWorld();
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS
-	world->setGravity(Vec2(0.f, -1500.f));
+	world->setGravity(Vec2(0.f, -800.f));
 #else
 	world->setGravity(Vec2(0.f, -1000.f));
 #endif
@@ -73,19 +73,6 @@ bool GameScene::init()
 	parallaxBackground.AddBackground("hills", 5);
 	parallaxBackground.ChangeBackground("hills");
 
-	//Projectile Pool SHOULD BE IN CHARACTER CLASS
-	for (int a = 1; a < 4; a++)
-	{
-		auto projectileNode = Node::create();
-		projectileNode->setName("Missile");
-		this->addChild(projectileNode, 1);
-
-		Projectile* newMissile = new Projectile("missile.png", 2.0f, Vec2(1.0f, 0.0f), 1.0f);
-		projectileNode->addChild(newMissile->getSprite(), 1);
-		newMissile->SetAlive(false);
-		projectileList.push_back(newMissile);
-	}
-
 	enemyManager = new EnemyManager(this);
 
 	spawnTimer = (float)(cocos2d::RandomHelper::random_int(5, 5));
@@ -127,6 +114,20 @@ void GameScene::InitAndroid()
 	mainChar.Init("PlayerIdle/idle1.png", "Player", 80, 160);
 	mainChar.SetScale(1.5f);
 	playerNode->addChild(mainChar.getSprite(), 1);
+    
+    //Projectile Pool SHOULD BE IN CHARACTER CLASS
+    for (int a = 1; a < 4; a++)
+    {
+        auto projectileNode = Node::create();
+        projectileNode->setName("Missile");
+        this->addChild(projectileNode, 1);
+        
+        Projectile* newMissile = new Projectile("missile.png", 2.0f, Vec2(1.0f, 0.0f), 1.0f);
+        projectileNode->addChild(newMissile->getSprite(), 1);
+        newMissile->SetAlive(false);
+        newMissile->groundHeight = 160.f;
+        projectileList.push_back(newMissile);
+    }
 
 	//Lives UI
 	for (int i = 0; i < mainChar.GetHits(); i++)
@@ -258,9 +259,23 @@ void GameScene::InitIOS()
 	playerNode->setPosition(0, 0);
 	this->addChild(playerNode, 1);
 
-	mainChar.Init("PlayerIdle/idle1.png", "Player", 80, 120);
-	mainChar.SetScale(1.f);
+	mainChar.Init("PlayerIdle/idle1.png", "Player", 80, 230);
+	mainChar.SetScale(1.5f);
 	playerNode->addChild(mainChar.getSprite(), 1);
+    
+    //Projectile Pool SHOULD BE IN CHARACTER CLASS
+    for (int a = 1; a < 4; a++)
+    {
+        auto projectileNode = Node::create();
+        projectileNode->setName("Missile");
+        this->addChild(projectileNode, 1);
+        
+        Projectile* newMissile = new Projectile("missile.png", 2.0f, Vec2(1.0f, 0.0f), 1.0f);
+        projectileNode->addChild(newMissile->getSprite(), 1);
+        newMissile->SetAlive(false);
+        newMissile->groundHeight = 230.f;
+        projectileList.push_back(newMissile);
+    }
 
 	//Lives UI
 	for (int i = 0; i < mainChar.GetHits(); i++)
@@ -274,13 +289,13 @@ void GameScene::InitIOS()
 	//Score UI
 	std::stringstream ss;
 	ss << mainChar.score;
-	text = Label::createWithTTF(ss.str(), "batman.ttf", 50.f);
+	text = Label::createWithTTF(ss.str(), "batman.ttf", 100.f);
 	text->setColor(Color3B(0.f, 0.f, 0.f));
 	text->setPosition(Vec2(visibleSize.width * 0.05f, visibleSize.height * 0.95f));
 	this->addChild(text, 2);
 	text->setPositionZ(5.f);
 
-	finalScore = Label::createWithTTF(ss.str(), "batman.ttf", 50.f);
+	finalScore = Label::createWithTTF(ss.str(), "batman.ttf", 100.f);
 	finalScore->setColor(Color3B(255, 255, 255));
 	finalScore->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.55f));
 	finalScore->setVisible(false);
@@ -288,7 +303,7 @@ void GameScene::InitIOS()
 
 
 	//Lose Text
-	loseText = Label::createWithTTF("You Lose", "batman.ttf", 100.f);
+	loseText = Label::createWithTTF("You Lose", "batman.ttf", 200.f);
 	loseText->setColor(Color3B(255, 255, 255));
 	loseText->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.8f));
 	this->addChild(loseText, 4);
@@ -299,6 +314,8 @@ void GameScene::InitIOS()
 	blackBg->setAnchorPoint(Vec2(0.f, 0.f));
 	blackBg->setPosition(Vec2(0.0f, 0.0f));
 	blackBg->setOpacity(200);
+    blackBg->setContentSize(Size(visibleSize.width, visibleSize.height));
+    
 	this->addChild(blackBg, 3);
 	blackBg->setVisible(false);
 
@@ -310,7 +327,7 @@ void GameScene::InitButtonsForIOS()
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto button = ui::Button::create("ui/settings-icon.png");
 	button->setPosition(Vec2(visibleSize.width * 0.96f, visibleSize.height * 0.94f));
-	button->setScale(0.1f);
+	button->setScale(0.3f);
 	button->addTouchEventListener([&](Ref* sender, ui::Widget::TouchEventType type)
 	{
 		if (type == ui::Widget::TouchEventType::ENDED)
@@ -341,6 +358,7 @@ void GameScene::InitButtonsForIOS()
 	});
 	resumeButton->setEnabled(false);
 	resumeButton->setVisible(false);
+    resumeButton->setScale(1.5f);
 	this->addChild(resumeButton, 4);
 
 	quitButton = ui::Button::create("ui/quit-normal.png", "ui/quit-selected.png");
@@ -354,7 +372,8 @@ void GameScene::InitButtonsForIOS()
 	});
 	quitButton->setEnabled(false);
 	quitButton->setVisible(false);
-	this->addChild(quitButton, 4);
+    quitButton->setScale(1.5f);
+    this->addChild(quitButton, 4);
 
 	shareButton = ui::Button::create("ui/share-normal.png", "ui/share-selected.png");
 	shareButton->setPosition(Vec2(visibleSize.width * 0.41f, visibleSize.height * 0.35f));
@@ -367,6 +386,7 @@ void GameScene::InitButtonsForIOS()
 	});
 	shareButton->setEnabled(false);
 	shareButton->setVisible(false);
+    shareButton->setScale(1.5f);
 	this->addChild(shareButton, 4);
 }
 
@@ -385,11 +405,6 @@ void GameScene::InitTouch()
 void GameScene::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 {
 	input.EnqueueKeyPressed((int)keyCode);
-	//if (keyCode == EventKeyboard::KeyCode::KEY_SPACE)
-	//{
-	//	//CCDirector::getInstance()->replaceScene(TransitionFade::create(1.5, HelloWorld::createScene(), Color3B(0, 255, 255)));
-	//	//SceneManager::getInstance()->runSceneWithType(CONSTANTS::SceneType::GAMEPLAY);
-	//}
 }
 
 void GameScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* event)

@@ -21,6 +21,7 @@ Projectile::Projectile()
 	m_ProjectileDirection = Vec2(1.0f, 0.0f);
 	//isAlive = false;
 	m_mainSprite->setVisible(false);
+    groundHeight = 150.f;
 }
 
 Projectile::~Projectile()
@@ -37,7 +38,7 @@ void Projectile::Update(double dt)
 		m_mainSprite->runAction(moveEvent);
 		m_mainSprite->setVisible(true);
 
-		if (m_mainSprite->getPosition().y <= 150.f)
+		if (m_mainSprite->getPosition().y <= groundHeight)
 		{
 			SetAlive(false);
 			m_mainSprite->setVisible(false);

@@ -16,6 +16,8 @@ protected:
 	float blastRadius;
 
 public:
+    float groundHeight;
+    
 	Projectile(const char* _srcImg, float, Vec2, int);
 	Projectile();
 	virtual ~Projectile();
