@@ -73,7 +73,7 @@ bool GameScene::init()
 	parallaxBackground.AddBackground("hills", 5);
 	parallaxBackground.ChangeBackground("hills");
 
-	enemyManager = new EnemyManager(this);
+	gameManager = new GameManager(this);
 
 	spawnTimer = (float)(cocos2d::RandomHelper::random_int(5, 5));
 	tempRandom = 0;
@@ -144,21 +144,21 @@ void GameScene::InitAndroid()
 	text = Label::createWithTTF(ss.str(), "batman.ttf", 100.f);
 	text->setColor(Color3B(0.f, 0.f, 0.f));
 	text->setPosition(Vec2(visibleSize.width * 0.05f, visibleSize.height * 0.95f));
-	this->addChild(text);
+	this->addChild(text, 2);
 	text->setPositionZ(5.f);
 
 	finalScore = Label::createWithTTF(ss.str(), "batman.ttf", 100.f);
 	finalScore->setColor(Color3B(255, 255, 255));
 	finalScore->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.55f));
 	finalScore->setVisible(false);
-	this->addChild(finalScore, 3);
+	this->addChild(finalScore, 4);
 
 
 	//Lose Text
 	loseText = Label::createWithTTF("You Lose", "batman.ttf", 200.f);
 	loseText->setColor(Color3B(255, 255, 255));
 	loseText->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.8f));
-	this->addChild(loseText, 3);
+	this->addChild(loseText, 4);
 	loseText->setVisible(false);
 	loseText->setPositionZ(5.f);
 
@@ -166,7 +166,7 @@ void GameScene::InitAndroid()
 	blackBg->setAnchorPoint(Vec2(0.f, 0.f));
 	blackBg->setPosition(Vec2(0.0f, 0.0f));
 	blackBg->setOpacity(200);
-	this->addChild(blackBg, 2);
+	this->addChild(blackBg, 3);
 	blackBg->setVisible(false);
 
 	InitButtonsForAndroid();
