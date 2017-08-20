@@ -33,7 +33,7 @@ void Enemy::Init(const char* _srcImg, const char* _name, float _x, float _y, flo
 
 }
 
-void Enemy::Update(float _delta, BaseEntity* character)
+void Enemy::Update(float _delta, BaseEntity* character, FeedBack* feedback)
 {
 	if (isAlive && character->GetAlive())
 	{
@@ -48,6 +48,7 @@ void Enemy::Update(float _delta, BaseEntity* character)
 			if (player)
 			{
 				player->TakeDamage();
+				feedback->playerTakeDamage();
 			}
 			isAlive = false;
 			m_mainSprite->setVisible(false);

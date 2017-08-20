@@ -428,6 +428,7 @@ void GameScene::update(float _delta)
 	{
 		gameState = GAME_STATE::DEFEAT;
 		loseText->setVisible(true);
+		mainChar.Death();
 		shareButton->setVisible(true);
 		shareButton->setEnabled(true);
 		blackBg->setVisible(true);
@@ -451,7 +452,7 @@ void GameScene::update(float _delta)
 	mainChar.Update(_delta);
 	parallaxBackground.Update(_delta);
 	
-	enemyManager->Update(_delta, &mainChar);
+	gameManager->Update(_delta, &mainChar);
 
 	if (GetNumberOfUIHearts() < mainChar.GetHealth())
 		AddUIHeart();

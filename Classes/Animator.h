@@ -8,7 +8,8 @@ class BaseEntity;
 
 class Animator
 {
-
+	Animate* animate;
+	Animation* animation;
 public:
 
 	enum AnimationType
@@ -18,6 +19,8 @@ public:
 		PLAYERIDLE,
 		PLAYERJUMP,
 		ENEMYRUN,
+		PLAYERHEAL,
+		PLAYERTAKEDAMAGE,
 		MAX
 	}animType;
 
@@ -28,6 +31,14 @@ public:
 	//Preload all the sprite animation inside a global variable 
 	//When animation is being called it will clone from there instead of create.
 
+	void Init();
+
+	void SetAnimType(AnimationType);
+	AnimationType GetAnimType();
+
+	void PowerUpAnimationFinish(BaseEntity*);
+
 	void PlayAnimation(AnimationType animType, BaseEntity* entity);
+	void PlayFeedBackAnimation(AnimationType animType, BaseEntity*);
 
 };
